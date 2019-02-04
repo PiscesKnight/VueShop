@@ -1,0 +1,38 @@
+.top-nav{
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: rgba(0,0,0,0.8);
+    padding-top: 10px
+}
+.item-jum{
+    border: 1px solid ghostwhite;
+    background-color: white;
+    padding: 0;
+    box-shadow: 0 0 10px #ccc;
+    margin-bottom: 25px;
+}
+
+.item-jum .item-title{
+    font-size: 14px;
+    padding: 8px 8px 0 8px;
+    margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: clip;
+    display: -webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient: vertical;
+}
+
+.item-jum .item-price{
+    color: red;
+    font-size: 16px;
+    margin-bottom: 0;
+    padding-left: 5px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+
+
+}

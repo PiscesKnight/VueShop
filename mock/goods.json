@@ -1,0 +1,174 @@
+{
+  "status":"0",
+  "msg":"",
+  "index":[
+      {
+        "productId":"lk001",
+        "productCover":"Cover001.jpg",
+        "productTitle":"想从ZHIFU防盗随身包里偷东西？痴心妄想！",
+        "productIntro":"今年随着腰包，随身包的流行，如今人们出门，都已经放弃背大包。毕竟夏天嘛，唯有全身轻便出街，才能体会到空气中吹来的那一丝凉风"
+      },
+    {
+      "productId": "lk002",
+      "productCover": "Cover002.jpg",
+      "productTitle": "想从ZHIFU防盗随身包里偷东西？痴心妄想！",
+      "productIntro": "今年随着腰包，随身包的流行，如今人们出门，都已经放弃背大包。毕竟夏天嘛，唯有全身轻便出街，才能体会到空气中吹来的那一丝凉风"
+    }
+  ],
+  "ranking":
+    {
+      "activity":"",
+      "parents":[
+        {
+          "productId":"like001",
+          "productCover":"parents001.jpg",
+          "productName":"SKG 按摩仪",
+          "productPrice":"89"
+        },
+        {
+          "productId":"like002",
+          "productCover":"parents002.jpg",
+          "productName":"迪斯足疗机",
+          "productPrice":"599"
+        },
+        {
+          "productId":"like003",
+          "productCover":"parents003.jpg",
+          "productName":"暖暖杯保温底座",
+          "productPrice":"199"
+        },
+        {
+          "productId":"like004",
+          "productCover":"parents004.jpg",
+          "productName":"暖暖杯保温底座",
+          "productPrice":"129"
+        },
+        {
+          "productId":"like005",
+          "productCover":"parents005.jpg",
+          "productName":"黑檀木中国象棋棋盘套装",
+          "productPrice":"160"
+        },
+        {
+          "productId":"like006",
+          "productCover":"parents006.jpg",
+          "productName":"兰蔻 小黑瓶 抗老去皱眼霜",
+          "productPrice":"520"
+        }
+      ],
+      "lover":[
+        {
+          "productId":"like007",
+          "productCover":"lover001.jpg",
+          "productName":"有妮 Yni 66玫瑰情人节礼盒",
+          "productPrice":"248"
+        },
+        {
+          "productId":"like008",
+          "productCover":"lover002.jpg",
+          "productName":"玖禾朦鹿系列月光石项链",
+          "productPrice":"999"
+        },
+        {
+          "productId":"like009",
+          "productCover":"lover003.jpg",
+          "productName":"意大利 东方宝石 香氛沐浴露500ml",
+          "productPrice":"158"
+        },
+        {
+          "productId":"like010",
+          "productCover":"lover004.jpg",
+          "productName":"圣方周 玄灵真叶 简约古风吊坠耳环项链",
+          "productPrice":"199"
+        },
+        {
+          "productId":"like011",
+          "productCover":"lover005.jpg",
+          "productName":"莫罗圣鹿能量棒 电子烟提神醒脑 600口持续长久 3支装",
+          "productPrice":"199"
+        },
+        {
+          "productId":"like012",
+          "productCover":"lover006.jpg",
+          "productName":"attoVERTICALE 意大利 机械腕表时尚",
+          "productPrice":"1880"
+        }
+      ],
+      "ladybro":[
+        {
+          "productId":"like013",
+          "productCover":"ladybro001.jpg",
+          "productName":"JUST MODE 摩登口红伞 晴雨两用",
+          "productPrice":"139"
+        },
+        {
+          "productId":"like014",
+          "productCover":"ladybro002.jpg",
+          "productName":"GO3 天使与恶魔暖手宝 USB充电",
+          "productPrice":"149"
+        },
+        {
+          "productId":"like015",
+          "productCover":"ladybro003.jpg",
+          "productName":"未见 WEE jEAN 限量款沙龙女士香水 35ml",
+          "productPrice":"399"
+        },
+        {
+          "productId":"like016",
+          "productCover":"ladybro004.jpg",
+          "productName":"英国kent梳子 英国进口猪鬃梳",
+          "productPrice":"209"
+        },
+        {
+          "productId":"like017",
+          "productCover":"ladybro005.jpg",
+          "productName":"OLIVIAM 澳洲 原装进口 腊菊美肤护手霜",
+          "productPrice":"86"
+        },
+        {
+          "productId":"like018",
+          "productCover":"ladybro006.jpg",
+          "productName":"Flora Kiss 真花变色果冻唇膏",
+          "productPrice":"268"
+        }
+      ],
+      "buddy":[
+        {
+          "productId":"like001",
+          "productCover":"buddy001.jpg",
+          "productName":"毒液卫衣男加绒款Venom暗黑连帽外套秋冬季长袖衣服",
+          "productPrice":"108"
+        },
+        {
+          "productId":"like002",
+          "productCover":"buddy002.jpg",
+          "productName":"明能 无线充电器 电子闹钟",
+          "productPrice":"169"
+        },
+        {
+          "productId":"like003",
+          "productCover":"buddy003.jpg",
+          "productName":"BeeFo小唱机 家用无线蓝牙音响",
+          "productPrice":"399"
+        },
+        {
+          "productId":"like004",
+          "productCover":"buddy004.jpg",
+          "productName":"bigbands Sup xGanmeBox 复古游戏机",
+          "productPrice":"158"
+        },
+        {
+          "productId":"like005",
+          "productCover":"buddy005.jpg",
+          "productName":"Moikit麦开 智能水杯cuptime2",
+          "productPrice":"399"
+        },
+        {
+          "productId":"like006",
+          "productCover":"buddy006.jpg",
+          "productName":"Deep Blue 球鞋清洗液 防水防污喷雾二合一",
+          "productPrice":"99"
+        }
+      ]
+    }
+}
