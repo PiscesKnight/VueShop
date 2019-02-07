@@ -7,11 +7,11 @@
     <img src="/static/images/index/index-tj.png" width="70%">
   </div>
   <div>
-    <div v-for="(items) in pruductList">
-      <img :src="'/static/images/index/'+items.productCover" width="100%">
+    <div v-for="item in pruductList" @click="clickIndexItem(item)">
+      <img :src="'/static/images/'+item.productImgs" width="100%">
       <div style="padding: 0 10px 10px 10px">
-        <p style="font-size: 17px;font-weight: bold;padding-top:10px ">{{items.productTitle}}</p>
-        <p style="font-size:13px;color: darkgray;letter-spacing:1px">{{items.productIntro}}</p>
+        <p style="font-size: 17px;font-weight: bold;padding-top:10px ">{{item.productTitle}}</p>
+        <p style="font-size:13px;color: darkgray;letter-spacing:1px">{{item.productIntro}}</p>
       </div>
     </div>
   </div>
@@ -39,6 +39,9 @@
           var res = result.data.data;
           this.pruductList = res.index;
         })
+      },
+      clickIndexItem(product){
+        this.$router.push({path: '/indexContent?id='+product.productId,query:{product:product}});
       }
     }
   }

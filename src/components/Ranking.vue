@@ -16,9 +16,9 @@
     </div>
     <div v-for="(items,index) in tabsContent" v-show="index==num" class="container">
       <div class="row" style="margin-top: 25px">
-        <div v-for="item in items" class="col-xs-6" style="min-height: 261px">
+        <div v-for="item in items" class="col-xs-6" style="min-height: 261px" @click="clickProduct(item)">
           <div class="item-jum">
-            <img :src="'/static/images/ranking/'+item.productCover" width="100%">
+            <img :src="'/static/images/'+item.productCover" width="100%">
             <p class="item-title">{{item.productName}}</p>
             <p class="item-price">￥{{item.productPrice}}</p>
           </div>
@@ -39,10 +39,6 @@
     data() {
       return {
         isActive: false,
-        parents:[],
-        lover:[],
-        ladybro:[],
-        buddy:[],
         tabs: ["送父母", "送恋人", "送闺蜜", "送基友"],
         tabsContent: [],//tab的切面数据数组，用push的方式把各个json数据加进去
         num: ''
@@ -65,8 +61,10 @@
       },
       tabClick(index) {
         this.num = index;
-
       },
+      clickProduct(product){
+        this.$router.push({name: 'productContent',params:{ item:product}});
+      }
 
     }
   }
