@@ -18,7 +18,7 @@
       <div class="row" style="margin-top: 25px">
         <div v-for="item in items" class="col-xs-6" style="min-height: 261px" @click="clickProduct(item)">
           <div class="item-jum">
-            <img :src="'/static/images/'+item.productCover" width="100%">
+            <img v-lazy="'/static/images/'+item.productCover" width="100%">
             <p class="item-title">{{item.productName}}</p>
             <p class="item-price">￥{{item.productPrice}}</p>
           </div>

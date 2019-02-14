@@ -20,6 +20,9 @@
 <script>
     export default {
         name: "IndexContent",
+      created:function () {
+
+      },
         data(){
           return{
             productList:this.$route.query.product
