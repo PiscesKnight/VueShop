@@ -49,14 +49,13 @@
     },
     methods: {
       getProductList() {
-        axios.get("/api/goods").then((result) => {
-          var res = result.data.data;
-          this.parents = res.ranking.parents;
-          this.lover = res.ranking.lover;
-          this.ladybro= res.ranking.ladybro;
-          this.buddy = res.ranking.buddy;
+        axios.get("/indexs/rankings").then((result) => {
+          var res = result.data.result.doc[0];
+          this.parents = res.parents;
+          this.lover = res.lover;
+          this.ladybro= res.ladybro;
+          this.buddy = res.buddy;
           this.tabsContent.push(this.parents,this.lover,this.ladybro,this.buddy)
-          console.log(this.buddy)
         })
       },
       tabClick(index) {
