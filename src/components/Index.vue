@@ -17,14 +17,19 @@
     </div>
 
     <div style="width: 100%;height: 60px"></div>
+  <nav-food></nav-food>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
+  import navFood from '@/views/NavFood'
 
   export default {
     name: 'Index',
+    components: {
+      'nav-food': navFood
+    },
     data() {
       return {
         pruductList: []

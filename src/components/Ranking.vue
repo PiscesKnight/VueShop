@@ -26,16 +26,21 @@
       </div>
     </div>
     <div style="width: 100%;height: 60px"></div>
+    <nav-food></nav-food>
   </div>
 
 </template>
 
 <script>
   import axios from 'axios'
-
+  import navFood from '@/views/NavFood'
+  import store from '@/store/store'
   export default {
     name: "Ranking",
-
+    store,
+    components:{
+      'nav-food':navFood
+    },
     data() {
       return {
         isActive: false,
@@ -62,7 +67,9 @@
         this.num = index;
       },
       clickProduct(product){
-        this.$router.push({name: 'productContent',params:{ item:product}});
+        this.$router.push({name:'productContent'})
+        sessionStorage.removeItem('product');
+        this.$store.commit('getProductList',product)
       }
 
     }

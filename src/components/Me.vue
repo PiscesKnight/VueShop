@@ -47,12 +47,17 @@
         </div>
       </div>
     </div>
+    <nav-food></nav-food>
   </div>
 </template>
 
 <script>
+  import navFood from '@/views/NavFood'
   export default {
-    name: "Me"
+    name: "Me",
+    components:{
+      'nav-food':navFood
+    }
   }
 </script>
 

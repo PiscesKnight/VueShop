@@ -1,19 +1,12 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <nav-food></nav-food>
   </div>
 </template>
 
 <script>
-  import NavFood from './views/NavFood'
-
   export default {
-  name: 'App',
-  components:
-    {
-      'nav-food':NavFood
-    }
+  name: 'App'
 }
 </script>
 
