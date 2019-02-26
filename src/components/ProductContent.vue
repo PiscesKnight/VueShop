@@ -12,33 +12,95 @@
     </div>
     <!--详情end-->
 
+    <!--弹出层-->
+    <car-sheet ref="sheet">
+      <div style="position: fixed;bottom: 0;left: 0;width: 100%;background: white;z-index: 101" class="container">
+        <div class="sheet row">
+          <div class="col-xs-3"><img :src="'/static/images/'+product.productCover"/></div>
+          <div class="col-xs-9"><p class="title">{{product.productName}}</p>
+          </div>
+
+        </div>
+        <div class="choose row" v-for="item in product.productStyle">
+          <div class="col-xs-3" style="text-align: center"><span>{{item.style}}</span></div>
+          <div class="col-xs-9">
+            <div>
+              <button class="btn btn-default"  v-for="itemstyle in item.value">{{itemstyle}}</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="choose row" style="margin-top: 10px">
+          <div class="col-xs-3" style="text-align: center"><span>数量</span></div>
+          <div class="col-xs-9">
+            <button @click="subtractCount" class="btn-default btn">-</button>
+            <input type="number" value="0" v-model="count" class="form-control" style="width: 50px;display: inline-block"/>
+            <button @click="addCount" class="btn-default btn">+</button>
+          </div>
+        </div>
+
+        <div style="padding-top: 15px;margin-top:10px;border-top: 1px solid gainsboro;text-align: center">
+
+        <button class="btn" style="width: 50%;background-color: black;color: white;margin-bottom: 15px" @click="addCar">加入购物车</button>
+        </div>
+      </div>
+    </car-sheet>
+    <!--弹出层end-->
+
     <!--底部-->
     <div class="cart-food">
       <img style="flex-grow: 1" src="../assets/shopcart.svg" width="10px">
       <div style="flex-grow: 1"></div>
-      <cube-button class="add-btn">加入购物车</cube-button>
+      <button class="add-btn" @click="showDefault">加入购物车</button>
       <button class="buy-btn">立即购买</button>
     </div>
     <!--底部end-->
+
   </div>
 </template>
 
 <script>
   import store from '@/store/store'
-  import {Button} from 'cube-ui'
+  import carSheet from '@/views/CarSheet'
+  import CarSheet from "../views/CarSheet";
 
   export default {
     name: "productContent",
+    components: {CarSheet},
     store,
     data() {
       return {
-        product: this.$store.state.product
+        product: this.$store.state.product,
+        count: 1,
       }
     },
-    created() {
+    component: [{
+      carSheet
+    }],
+    methods: {
+      showDefault() {
+        this.$refs.sheet.$data.showSheet = true,
+          console.log(this.product.productStyle)
+      },
+      addCount() {
+        this.count++;
+      },
+      subtractCount() {
+        if (this.count <= 1) {
+          this.count = 1
+        } else {
+          this.count -= 1
+        }
+      },
+      addCar(){
+        this.$refs.sheet.$data.showSheet = false
+      }
+
     },
-    methods: {},
+
   }
+
+
 </script>
 
 <style lang="scss">
@@ -89,4 +151,31 @@
       color: white;
     }
   }
+
+  /*弹出层*/
+  .sheet {
+    padding: 10px;
+    img {
+      width: 50px;
+      float: left;
+      margin-right: 20px;
+    }
+    .title {
+      line-height: 50px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+  .choose{
+    margin-top: 10px;
+    span{
+      line-height: 34px;
+    }
+  }
+
+  .btn-default:hover {
+    background-color: yellow;
+  }
+
+
 </style>

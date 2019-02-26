@@ -5,14 +5,14 @@ import App from './App'
 import router from './router'
 import store from './store/store'
 import Vuelazyload from 'vue-lazyload'
-import Cube from 'cube-ui'
+import vueLayer from 'vue2-layer-mobile'
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 
 Vue.use(Vuelazyload)
-Vue.use(Cube)
+Vue.use(vueLayer)
 
 new Vue({
   el: '#app',
