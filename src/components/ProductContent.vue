@@ -49,7 +49,7 @@
 
     <!--底部-->
     <div class="cart-food">
-      <img style="flex-grow: 1" src="../assets/shopcart.svg" width="10px">
+      <router-link to="carList"><img style="flex-grow: 1;width: 45px;padding: 5px 0" src="../assets/shopcart.svg" ></router-link>
       <div style="flex-grow: 1"></div>
       <button class="add-btn" @click="showDefault">加入购物车</button>
       <button class="buy-btn">立即购买</button>

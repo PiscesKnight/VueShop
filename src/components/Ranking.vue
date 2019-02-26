@@ -55,12 +55,17 @@
     methods: {
       getProductList() {
         axios.get("/indexs/rankings").then((result) => {
-          var res = result.data.result.doc[0];
-          this.parents = res.parents;
-          this.lover = res.lover;
-          this.ladybro= res.ladybro;
-          this.buddy = res.buddy;
-          this.tabsContent.push(this.parents,this.lover,this.ladybro,this.buddy)
+          if(result.data.status == '0'){
+            var res = result.data.result.doc[0];
+            this.parents = res.parents;
+            this.lover = res.lover;
+            this.ladybro= res.ladybro;
+            this.buddy = res.buddy;
+            this.tabsContent.push(this.parents,this.lover,this.ladybro,this.buddy)
+          }else {
+
+          }
+
         })
       },
       tabClick(index) {

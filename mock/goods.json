@@ -32,7 +32,17 @@
         "productId": "like001",
         "productCover": "ranking/parents001.jpg",
         "productName": "SKG 按摩仪",
-        "productPrice": "89"
+        "productPrice": "89",
+        "productStyle" : [
+          {
+            "style" : "颜色",
+            "value" : [
+              "蓝色",
+              "红色",
+              "黄色"
+            ]
+          }
+        ]
 
       },
       {

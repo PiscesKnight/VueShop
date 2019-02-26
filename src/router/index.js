@@ -6,6 +6,7 @@ import Ranking from '@/components/Ranking'
 import Me from '@/components/Me'
 import IndexContent from '@/components/IndexContent'
 import ProductContent from '@/components/ProductContent'
+import CarList from '@/components/CarList'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
       path: '/productContent',
       name: 'productContent',
       component: ProductContent
+    },
+    {
+      path: '/carList',
+      name: 'carList',
+      component: CarList
     }
   ]
 })
