@@ -7,6 +7,8 @@ import Me from '@/components/Me'
 import IndexContent from '@/components/IndexContent'
 import ProductContent from '@/components/ProductContent'
 import CarList from '@/components/CarList'
+import Oder from '@/components/Oder'
+import Address from '@/components/Address'
 
 Vue.use(Router)
 
@@ -48,6 +50,16 @@ export default new Router({
       path: '/carList',
       name: 'carList',
       component: CarList
+    },
+    {
+      path:'/oders',
+      name:'oders',
+      component:Oder
+    },
+    {
+      path:'/address',
+      name:'address',
+      component:Address
     }
   ]
 })

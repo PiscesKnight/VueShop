@@ -2,16 +2,12 @@
 <!--购物车列表-->
   <div>
     <!--头部-->
-    <div class="top-div container">
-      <div class=" row" >
-        <div class="col-xs-2"><</div>
-        <div class="col-xs-8"><p style="text-align: center">我的购物车</p></div>
-        <div class="col-xs-2"><button class="btn">编辑</button></div>
-      </div>
-    </div>
+    <header-top>
+      <p slot="top-title">我的购物车</p>
+      <p slot="top-right">编辑</p>
+    </header-top>
     <!--头部end-->
 
-    <div style="height: 50px;width: 100%"></div>
     <!--列表-->
     <div class="list container">
       <div class="row" v-for="item in prodctList">
@@ -45,12 +41,12 @@
     <div class="carlist-fooder ">
       <div class="row">
         <div class="checkbox col-xs-3" >
-          <label><input type="checkbox" value="" >全选</label>
+          <label><input type="checkbox" value="">全选</label>
         </div>
         <div class="col-xs-6">
           <p style="text-align: right">总计：￥{{sum}}.00</p>
         </div>
-        <div class="col-xs-3"><button class="btn btn-danger">去结算</button></div>
+        <div class="col-xs-3"><router-link to="oders"><button class="btn btn-danger">去结算</button></router-link></div>
       </div>
     </div>
     <!--底部end-->
@@ -60,9 +56,11 @@
 
 <script>
   import axios from 'axios'
+  import HeaderTop from "../views/HeaderTop";
 
     export default {
         name: "CarList",
+      components: {HeaderTop},
       data(){
           return{
             prodctList:[],
@@ -81,7 +79,6 @@
               var res = result.data;
               if(res.status == '0'){
                 this.prodctList = res.result.users[0].users[0].carlist
-                console.log( this.prodctList[0].productStyle[0].style)
               }
               else {
                 this.prodctList = []
@@ -99,27 +96,6 @@
 </script>
 
 <style lang="scss">
-  .top-div{
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    border-bottom: 1px solid gray;
-    background-color: rgba(133,133,133,0.5);
-    color: white;
-    padding-right: 30px;
-    p{
-      padding-left: 15px;
-    }
-    .btn{
-      color: white;
-      background-color: black;
-      border: 1px solid black;
-    }
-  }
   .list-col{
   padding: 10px;
     border-bottom: 1px solid gray;
