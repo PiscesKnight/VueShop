@@ -19,16 +19,19 @@
           <div class="col-xs-3"><img :src="'/static/images/'+product.productCover"/></div>
           <div class="col-xs-9"><p class="title">{{product.productName}}</p>
           </div>
-
         </div>
+
+        <!--规格选择-->
         <div class="choose row" v-for="item in product.productStyle">
           <div class="col-xs-3" style="text-align: center"><span>{{item.style}}</span></div>
           <div class="col-xs-9">
             <div>
-              <button class="btn btn-default"  v-for="itemstyle in item.value">{{itemstyle}}</button>
+              <span @click="styleTab(index,itemstyle)" :class="{'btn-style-active':index==styleChoose}" class="btn btn-style"  v-for="(itemstyle,index) in item.value">{{itemstyle}}</span>
             </div>
           </div>
+        <!--规格选择end-->
 
+          <!--数量选择-->
         </div>
         <div class="choose row" style="margin-top: 10px">
           <div class="col-xs-3" style="text-align: center"><span>数量</span></div>
@@ -38,6 +41,7 @@
             <button @click="addCount" class="btn-default btn">+</button>
           </div>
         </div>
+          <!--数量选择end-->
 
         <div style="padding-top: 15px;margin-top:10px;border-top: 1px solid gainsboro;text-align: center">
 
@@ -60,9 +64,9 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import store from '@/store/store'
-  import carSheet from '@/views/CarSheet'
-  import CarSheet from "../views/CarSheet";
+  import CarSheet from '../views/CarSheet'
 
   export default {
     name: "productContent",
@@ -72,15 +76,20 @@
       return {
         product: this.$store.state.product,
         count: 1,
+        styleChoose:'',
+        styleValue:this.$store.state.product.productStyle[0].value[0]
       }
     },
-    component: [{
-      carSheet
-    }],
     methods: {
       showDefault() {
         this.$refs.sheet.$data.showSheet = true,
-          console.log(this.product.productStyle)
+          console.log(this.styleValue)
+      },
+      //style标签选择
+      styleTab(index,value){
+        this.styleChoose = index,
+          this.styleValue = value,
+        console.log(index,this.product.productStyle[0].style)
       },
       addCount() {
         this.count++;
@@ -93,9 +102,26 @@
         }
       },
       addCar(){
-        this.$refs.sheet.$data.showSheet = false
-      }
+          axios.post('/users/cartlistFind',{productId:this.product.productId}).then((response)=>{
+            let res = response.data;
+            if(res.result == 0){
+              this.$refs.sheet.$data.showSheet = false,
+              //  插入数据
+                axios.post('/users/cartlistAdd',{product:this.product,styleValue:this.styleValue,count:this.count}).then((response)=>{
+                  let res2 = response.data;
+                    console.log("res2:"+res2)
+                  if(res2.status =='0'){
+                    console.log('插入成功')
+                  }else {
+                    console.log('插入失败')
+                  }
+                })
 
+            }else {
+              console.log('有相同数据')
+            }
+          })
+      },
     },
 
   }
@@ -173,8 +199,14 @@
     }
   }
 
-  .btn-default:hover {
-    background-color: yellow;
+  .btn-style{
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+  }
+  .btn-style-active{
+    color: red;
+    border: 1px solid red;
   }
 
 

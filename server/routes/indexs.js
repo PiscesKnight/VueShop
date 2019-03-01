@@ -3,7 +3,7 @@ var router =express.Router();
 var mongoose = require('mongoose')
 var Index = require('../models/indexs')
 var Ranking = require('../models/rankings')
-var User = require('../models/users')
+
 
 
 //链接MongoDB数据库
@@ -63,24 +63,6 @@ router.get('/rankings',(req,res,next)=>{
   })
 })
 
-router.get('/users',(req,res,next)=>{
-  User.find({}, (err, doc) =>{
-    if(err){
-      res.json({
-        status:'1',
-        msg:err.message
-      })
-    }else {
-      res.json({
-        status:'0',
-        msg:'',
-        result:{
-          count:doc.length,
-          users:doc
-        }
-      })
-    }
-  })
-})
+
 
 module.exports = router

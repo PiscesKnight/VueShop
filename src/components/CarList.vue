@@ -64,7 +64,7 @@
       data(){
           return{
             prodctList:[],
-            sum:0
+            sum:0,
           }
       },
       mounted () {
@@ -75,10 +75,11 @@
       },
       methods:{
         getCarList(){
-            axios.get("/indexs/users").then((result)=>{
+            axios.get("/users/cartlist").then((result)=>{
               var res = result.data;
+
               if(res.status == '0'){
-                this.prodctList = res.result.users[0].users[0].carlist
+                this.prodctList = res.result.users[0].carlist
               }
               else {
                 this.prodctList = []
@@ -86,11 +87,6 @@
             })
 
           },
-        getCarList2(){
-            axios.get('indexs/rankings').then((req,err)=>{
-
-            })
-        }
       }
     }
 </script>
