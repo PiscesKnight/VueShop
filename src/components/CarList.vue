@@ -23,7 +23,7 @@
           <div class="">
             <p style="font-weight: 600">{{item.productName}}</p>
             <p v-for="style in item.productStyle" style="color: gray;font-size: 10px">
-              {{style.style}}:{{style.value}}
+              {{style.style}}：{{style.value[0]}}
             </p>
             <p style="color: red">{{item.productPrice}}</p>
           </div>

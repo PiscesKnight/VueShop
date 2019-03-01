@@ -104,21 +104,27 @@
       addCar(){
           axios.post('/users/cartlistFind',{productId:this.product.productId}).then((response)=>{
             let res = response.data;
-            if(res.result == 0){
-              this.$refs.sheet.$data.showSheet = false,
+            if(res.result == 0){//列表没有这个商品
+
               //  插入数据
-                axios.post('/users/cartlistAdd',{product:this.product,styleValue:this.styleValue,count:this.count}).then((response)=>{
+                axios.post('/users/cartlistAdd',{product:this.product,styleValue:this.styleValue,count:this.count,docLength:res.result}).then((response)=>{
                   let res2 = response.data;
-                    console.log("res2:"+res2)
                   if(res2.status =='0'){
-                    console.log('插入成功')
+                    this.$refs.sheet.$data.showSheet = false
                   }else {
                     console.log('插入失败')
                   }
                 })
 
             }else {
-              console.log('有相同数据')
+              axios.post('/users/cartlistAdd',{product:this.product,count:this.count,styleValue:this.styleValue,docLength:res.result}).then((response)=>{
+                let res2 = response.data;
+                if(res2.status =='0'){
+                  this.$refs.sheet.$data.showSheet = false
+                }else {
+                  console.log('插入失败')
+                }
+              })
             }
           })
       },

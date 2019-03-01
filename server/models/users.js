@@ -11,11 +11,11 @@ var userSchema = new Schema({
           productCover : String,
           productName : String,
           productPrice : String,
-          count : String,
+          count : Number,
           productStyle : [
             {
               style : String,
-              value : String
+              value : Array
             }
           ]
         }
