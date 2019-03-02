@@ -11,12 +11,12 @@
     <!--列表-->
     <div class="list container">
       <div class="row" v-for="item in prodctList">
-        <div class="col-xs-1" style="line-height: 153px">
+        <div class="col-xs-1" style="line-height: 123px">
           <div class="checkbox">
             <label><input type="checkbox" value=""></label>
           </div>
         </div>
-        <div class="col-xs-4" style="line-height: 163px">
+        <div class="col-xs-4" style="line-height: 133px">
           <img :src="'/static/images/'+item.productCover" width="100%" />
         </div>
         <div class="col-xs-7 list-col">
@@ -37,6 +37,7 @@
     </div>
     <!--列表end-->
 
+    <div style="width: 100%;height: 50px;"></div>
     <!--底部-->
     <div class="carlist-fooder ">
       <div class="row">

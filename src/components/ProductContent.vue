@@ -45,7 +45,8 @@
 
         <div style="padding-top: 15px;margin-top:10px;border-top: 1px solid gainsboro;text-align: center">
 
-        <button class="btn" style="width: 50%;background-color: black;color: white;margin-bottom: 15px" @click="addCar">加入购物车</button>
+        <button v-show="isAddCart" class="btn" style="width: 50%;background-color: black;color: white;margin-bottom: 15px" @click="addCar">加入购物车</button>
+        <button v-show="isBuy" class="btn" style="width: 50%;background-color: red;color: white;margin-bottom: 15px" @click="toOder">立即购买</button>
         </div>
       </div>
     </car-sheet>
@@ -55,8 +56,8 @@
     <div class="cart-food">
       <router-link to="carList"><img style="flex-grow: 1;width: 45px;padding: 5px 0" src="../assets/shopcart.svg" ></router-link>
       <div style="flex-grow: 1"></div>
-      <button class="add-btn" @click="showDefault">加入购物车</button>
-      <button class="buy-btn">立即购买</button>
+      <button class="add-btn" @click="showDefault('加入购物车')">加入购物车</button>
+      <button class="buy-btn" @click='showDefault("立即购买")'>立即购买</button>
     </div>
     <!--底部end-->
 
@@ -67,6 +68,7 @@
   import axios from 'axios'
   import store from '@/store/store'
   import CarSheet from '../views/CarSheet'
+  import layer from 'vue2-layer-mobile'
 
   export default {
     name: "productContent",
@@ -76,20 +78,27 @@
       return {
         product: this.$store.state.product,
         count: 1,
-        styleChoose:'',
-        styleValue:this.$store.state.product.productStyle[0].value[0]
+        styleChoose:'',//用于判断点击标签更换点击样式
+        styleValue:this.$store.state.product.productStyle[0].value[0],//保存选择类型的值
+        isAddCart:false,//加入购物车按钮
+        isBuy:false//立即购买按钮
       }
     },
     methods: {
-      showDefault() {
-        this.$refs.sheet.$data.showSheet = true,
-          console.log(this.styleValue)
+      showDefault(str) {
+        if(str=='加入购物车'){
+          this.isAddCart = true;
+          this.isBuy = false
+        }else if(str=='立即购买'){
+          this.isAddCart = false;
+          this.isBuy = true
+        }
+        this.$refs.sheet.$data.showSheet = true
       },
       //style标签选择
       styleTab(index,value){
         this.styleChoose = index,
-          this.styleValue = value,
-        console.log(index,this.product.productStyle[0].style)
+          this.styleValue = value
       },
       addCount() {
         this.count++;
@@ -102,32 +111,56 @@
         }
       },
       addCar(){
+        this.$refs.sheet.$data.showSheet = false,
           axios.post('/users/cartlistFind',{productId:this.product.productId}).then((response)=>{
             let res = response.data;
             if(res.result == 0){//列表没有这个商品
-
               //  插入数据
                 axios.post('/users/cartlistAdd',{product:this.product,styleValue:this.styleValue,count:this.count,docLength:res.result}).then((response)=>{
                   let res2 = response.data;
                   if(res2.status =='0'){
-                    this.$refs.sheet.$data.showSheet = false
+                      this.$layer.open({
+                        content: '添加成功'
+                        ,skin: 'msg'
+                        ,time: 1 //1秒后自动关闭
+                      });
                   }else {
+                    this.$layer.open({
+                      content: '添加失败'
+                      ,skin: 'msg'
+                      ,time: 1 //1秒后自动关闭
+                    });
                     console.log('插入失败')
                   }
                 })
 
             }else {
+              this.$refs.sheet.$data.showSheet = false,
               axios.post('/users/cartlistAdd',{product:this.product,count:this.count,styleValue:this.styleValue,docLength:res.result}).then((response)=>{
                 let res2 = response.data;
                 if(res2.status =='0'){
-                  this.$refs.sheet.$data.showSheet = false
+
+                    this.$layer.open({
+                      content: '添加成功'
+                      ,skin: 'msg'
+                      ,time: 2 //2秒后自动关闭
+                    });
                 }else {
+                  this.$layer.open({
+                    content: '添加失败'
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                  });
                   console.log('插入失败')
                 }
               })
             }
           })
       },
+      //立即购买
+      toOder(){
+          this.$router.push('/oders')
+      }
     },
 
   }

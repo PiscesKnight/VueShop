@@ -13,7 +13,7 @@ module.exports = {
     //代理插件
     proxyTable: {
         '/indexs':{
-          target:'http://localhost:3000'
+          target:'http://localhost:3000/'
         },
       '/users':{
         target:'http://localhost:3000'
