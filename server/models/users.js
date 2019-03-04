@@ -10,8 +10,9 @@ var userSchema = new Schema({
           productId : String,
           productCover : String,
           productName : String,
-          productPrice : String,
+          productPrice : Number,
           count : Number,
+          checked:Boolean,
           productStyle : [
             {
               style : String,

@@ -14,6 +14,7 @@
 
     <!--弹出层-->
     <car-sheet ref="sheet">
+
       <div style="position: fixed;bottom: 0;left: 0;width: 100%;background: white;z-index: 101" class="container">
         <div class="sheet row">
           <div class="col-xs-3"><img :src="'/static/images/'+product.productCover"/></div>

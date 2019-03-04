@@ -62,6 +62,7 @@ router.post('/cartlistAdd',function(req,res,next){
             "productName" :product.productName,
             "productPrice" : product.productPrice,
             "count" : count,
+            "checked":true,
             "productStyle" : [
               {
                 "style" : product.productStyle[0].style,
@@ -109,6 +110,7 @@ router.post('/cartlistAdd',function(req,res,next){
                   "productName" :product.productName,
                   "productPrice" : product.productPrice,
                   "count" : count,
+                  "checked":true,
                   "productStyle" : [
                     {
                       "style" : product.productStyle[0].style,
@@ -156,6 +158,32 @@ router.post('/cartlistAdd',function(req,res,next){
 
   }
 
+})
+
+//购物车编辑
+router.post('/carEdit',(req,res,next)=>{
+  var productId = req.body.productId
+  var count = req.body.count
+  var styleValue = req.body.styleValue[0].value[0]
+  var checked = req.body.checked
+  User.updateOne({'carlist':{$elemMatch:{'productId':productId,'productStyle.value':styleValue}}},{'carlist.$.count':count,'carlist.$.checked':checked},(err, doc)=>{
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message
+      })
+    }else {
+      console.log('productId:'+productId)
+      console.log('productStyleValue:'+styleValue)
+      console.log('count:'+count)
+      console.log('checked:'+checked)
+      res.json({
+        status:'0',
+        msg:'',
+        result:'suc'
+      })
+    }
+  })
 })
 
 module.exports = router;
