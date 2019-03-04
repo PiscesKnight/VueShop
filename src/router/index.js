@@ -9,6 +9,7 @@ import ProductContent from '@/components/ProductContent'
 import CarList from '@/components/CarList'
 import Oder from '@/components/Oder'
 import Address from '@/components/Address'
+import Pay from '@/components/Pay'
 
 Vue.use(Router)
 
@@ -60,6 +61,11 @@ export default new Router({
       path:'/address',
       name:'address',
       component:Address
+    },
+    {
+      path:'/pay',
+      name:'pay',
+      component:Pay
     }
   ]
 })

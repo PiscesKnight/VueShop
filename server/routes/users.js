@@ -186,4 +186,32 @@ router.post('/carEdit',(req,res,next)=>{
   })
 })
 
+//添加订单列表
+router.post('/orderCreate',(req,res,next)=>{
+
+  User.uppateOne({},{},(err,doc)=>{
+
+  })
+})
+
+//订单列表
+router.post('/oderlist',(req,res,next)=>{
+
+  User.findOne({'carlist.checked':true},'carlist.checked',function (err,doc) {
+      if(err){
+        res.json({
+          status:'1',
+          msg:err.msg,
+
+        })
+      }else {
+        res.json({
+          status:'0',
+          msg:'',
+          result:doc
+        })
+      }
+  })
+})
+
 module.exports = router;

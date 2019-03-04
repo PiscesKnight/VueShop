@@ -26,15 +26,15 @@
 
     <!--收货地址end-->
   <!--产品信息-->
-  <div class="oder-productdiv">
+  <div class="oder-productdiv" v-for="item in orderList" v-if="item.checked==true" >
     <div>
-      <img src="/static/images/ranking/buddy001.jpg" width="80px"/>
+      <img :src="'/static/images/'+item.productCover" width="80px"/>
     </div>
     <div class="oder-productinfo">
-      <p>产品名称</p>
+      <p>{{item.productName}}</p>
       <div style="display: flex;">
-        <p style="flex: 1">颜色：XXX</p>
-        <p>x1</p>
+        <p style="flex: 1">颜色：{{item.productStyle[0].value[0]}}</p>
+        <p>x{{item.count}}</p>
       </div>
     </div>
   </div>
@@ -49,19 +49,19 @@
 
       <div class="oder-info-div">
         <p class="oder-info-p">商品金额</p>
-        <p class="oder-info-p2">￥178.00</p>
+        <p class="oder-info-p2">￥{{this.priceSum}}.00</p>
       </div>
       <div class="oder-info-div">
         <p class="oder-info-p">金币抵扣：</p>
-        <p class="oder-info-p2">-￥0.00</p>
+        <p class="oder-info-p2">-￥{{this.jb}}.00</p>
       </div>
       <div class="oder-info-div">
         <p class="oder-info-p">运费</p>
-        <p class="oder-info-p2">+￥0.00</p>
+        <p class="oder-info-p2">+￥{{this.freight}}.00</p>
       </div>
       <div class="oder-info-div">
         <p class="oder-info-p" style="color: black">实付款：</p>
-        <p class="oder-info-p2" style="color: red">￥178.00</p>
+        <p class="oder-info-p2" style="color: red">￥{{this.priceTotals}}.00</p>
       </div>
     </div>
     <!--订单其他信息end-->
@@ -70,8 +70,8 @@
     <div class="navbar-fixed-bottom" style="height: 50px;background: black">
       <div style="display: flex;padding: 10px 20px">
 
-      <span style="flex: 1;text-align: right;line-height: 34px;font-size: 16px;color: white;margin-right: 20px">总计：￥178.00</span>
-      <button class="btn btn-danger">确定下单</button>
+      <span style="flex: 1;text-align: right;line-height: 34px;font-size: 16px;color: white;margin-right: 20px">总计：￥{{this.priceTotals}}.00</span>
+        <button class="btn btn-danger"><router-link :to="{ name: 'pay', params: { priceTotals: this.priceTotals}}">确定下单</router-link></button>
       </div>
     </div>
     <!--底部end-->
@@ -80,13 +80,52 @@
 
 <script>
   import HeaderTop from "../views/HeaderTop";
+  import axios from 'axios'
     export default {
         name: "Oder",
+      data(){
+          return{
+            orderList:[],
+            priceSum:0,//商品总金额
+            jb:0,//金币抵扣
+            freight:0,//运费
+          }
+      },
+      props:{
+
+      },
       components: {HeaderTop},
+      mounted:function () {
+        this.getOrderList()
+      },
+      computed:{
+        priceTotals:function () {
+          return this.priceSum+this.jb+this.freight
+        }
+      },
       methods:{
           toAddress(){
             this.$router.push({path:'/address'})
-          }
+          },
+        getOrderList(){
+          axios.get("/users/cartlist").then((result)=>{
+            var res = result.data;
+            if(res.status == '0'){
+              this.orderList = res.result.users[0].carlist
+              //初始化商品总金额
+              for(var i=0;i<this.orderList.length;i++){
+                if(this.orderList[i].checked){
+                  this.priceSum +=this.orderList[i].productPrice*this.orderList[i].count
+                }
+              }
+
+            }
+            else {
+              this.orderList = []
+            }
+          })
+        }
+
       }
     }
 </script>
