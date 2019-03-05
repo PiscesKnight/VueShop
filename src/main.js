@@ -5,14 +5,15 @@ import App from './App'
 import router from './router'
 import store from './store/store'
 import Vuelazyload from 'vue-lazyload'
-import vueLayer from 'vue2-layer-mobile'
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 
 Vue.use(Vuelazyload)
-Vue.use(vueLayer)
+Vue.use(MintUI)
 
 new Vue({
   el: '#app',

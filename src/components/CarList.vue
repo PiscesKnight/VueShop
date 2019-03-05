@@ -4,15 +4,16 @@
     <!--头部-->
     <header-top>
       <p slot="top-title">我的购物车</p>
-      <p slot="top-right">编辑</p>
+      <p slot="top-right" @click="carDel">编辑</p>
     </header-top>
     <!--头部end-->
 
     <!--列表-->
     <div class="list container">
-      <div class="row" v-for="item in carList" ref="item">
+      <div class="row" v-for="(item,index) in carList">
         <div class="col-xs-1" style="line-height: 123px">
-          <div class="" @change="clickCheck(item)">
+          <button v-show="delBtnShow" @click="delProduct(index)" class="btn-danger btn">-</button>
+          <div v-show="!delBtnShow" @change="clickCheck(item)">
             <label><input type="checkbox" ref="checkbox" :checked="item.checked" ></label>
           </div>
         </div>
@@ -59,6 +60,7 @@
 <script>
   import axios from 'axios'
   import HeaderTop from "../views/HeaderTop";
+  import {MessageBox} from 'mint-ui'
 
     export default {
         name: "CarList",
@@ -67,6 +69,7 @@
           return{
             carList:[],
             sum:0,
+            delBtnShow:false
           }
       },
       mounted () {
@@ -92,6 +95,7 @@
               if(res.status == '0'){
                 this.carList = res.result.users[0].carlist
                 //初始化新加入购物车的数据
+                this.sum = 0;//初始化
                 for(var i=0;i<this.carList.length;i++){
                     if(this.carList[i].checked){
                     this.sum+= (this.carList[i].productPrice*this.carList[i].count)
@@ -157,8 +161,31 @@
              let res = response.data;
            })
          }
+        },
+      //  删除功能
+        carDel(e){
+          let text =  e.target.innerText
+          if(text =='编辑'){
+            e.target.innerText = '完成'
+            this.delBtnShow = !this.delBtnShow
+          }else if(text =='完成'){
+            e.target.innerText ='编辑'
+            this.delBtnShow = !this.delBtnShow
+          }
+        },
+        delProduct(index){
+          this.$messagebox.confirm("确定删除此商品?").then(action => {
+            axios.post('/users/carDel',{_id:this.carList[index]._id}).then((response)=>{
+                let res = response.data;
+                if(res.status=='0'){
+                  this.$messagebox.alert("删除成功").then(action=>{
+                    this.getCarList()
+                  })
+                }
+            })
+          })
         }
-      }
+        }
     }
 </script>
 

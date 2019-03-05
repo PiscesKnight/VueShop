@@ -69,7 +69,6 @@
   import axios from 'axios'
   import store from '@/store/store'
   import CarSheet from '../views/CarSheet'
-  import layer from 'vue2-layer-mobile'
 
   export default {
     name: "productContent",
@@ -120,18 +119,18 @@
                 axios.post('/users/cartlistAdd',{product:this.product,styleValue:this.styleValue,count:this.count,docLength:res.result}).then((response)=>{
                   let res2 = response.data;
                   if(res2.status =='0'){
-                      this.$layer.open({
-                        content: '添加成功'
-                        ,skin: 'msg'
-                        ,time: 1 //1秒后自动关闭
-                      });
+                      // this.$layer.open({
+                      //   content: '添加成功'
+                      //   ,skin: 'msg'
+                      //   ,time: 1 //1秒后自动关闭
+                      // });
                   }else {
-                    this.$layer.open({
-                      content: '添加失败'
-                      ,skin: 'msg'
-                      ,time: 1 //1秒后自动关闭
-                    });
-                    console.log('插入失败')
+                    // this.$layer.open({
+                    //   content: '添加失败'
+                    //   ,skin: 'msg'
+                    //   ,time: 1 //1秒后自动关闭
+                    // });
+                    // console.log('插入失败')
                   }
                 })
 
@@ -141,18 +140,18 @@
                 let res2 = response.data;
                 if(res2.status =='0'){
 
-                    this.$layer.open({
-                      content: '添加成功'
-                      ,skin: 'msg'
-                      ,time: 2 //2秒后自动关闭
-                    });
+                    // this.$layer.open({
+                    //   content: '添加成功'
+                    //   ,skin: 'msg'
+                    //   ,time: 2 //2秒后自动关闭
+                    // });
                 }else {
-                  this.$layer.open({
-                    content: '添加失败'
-                    ,skin: 'msg'
-                    ,time: 2 //2秒后自动关闭
-                  });
-                  console.log('插入失败')
+                  // this.$layer.open({
+                  //   content: '添加失败'
+                  //   ,skin: 'msg'
+                  //   ,time: 2 //2秒后自动关闭
+                  // });
+                  // console.log('插入失败')
                 }
               })
             }

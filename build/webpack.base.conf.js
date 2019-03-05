@@ -43,6 +43,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        include: [
+          /src/,
+          '/node_modules/mint-ui/lib/'
+        ],
         loader: "css-loader",
 
       },

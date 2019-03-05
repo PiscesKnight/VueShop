@@ -214,6 +214,29 @@ router.post('/carEditAll',(req,res,next)=>{
   })
 })
 
+//购物车删除商品
+router.post('/carDel',(req,res,next)=>{
+  var _id = req.body._id
+
+  User.updateOne({'userid':'U001'},{$pull:{carlist:{_id:_id}}},(err,doc)=>{
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message
+      })
+
+    }else {
+      res.json({
+        status:'0',
+        mgs:'',
+        result:'suc'
+      })
+    }
+    }
+
+  )
+})
+
 //订单列表
 router.post('/oderlist',(req,res,next)=>{
 
