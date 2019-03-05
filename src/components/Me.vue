@@ -1,20 +1,49 @@
 <template>
   <div>
     <div class="header">
-      <p>我</p>
+      <span class="exit"></span>
+      <span>我</span>
+      <span @click="loginExit" class="exit" :class="{hiddenDiv:!infoVisible}"  >退出</span>
     </div>
     <div class="one">
-      <div class="container">
-        <div class="row" style="padding: 10px 15px 20px 15px">
+      <!--未登录状态-->
+      <div v-show="!infoVisible" style="text-align: center;margin: 50px">
+        <span @click="login('1')" style="border: 1px solid black;border-radius: 50%;padding: 30px;color: yellow;background-color: black">
+          登录
+        </span>
+      </div>
+
+      <mt-popup style="width: 70%"
+      v-model="popupVisible"
+      popup-transition="popup-fade"
+      modal="true">
+        <div style="width: 100%;padding: 20px">
+          <p style="font-size: 20px;font-weight: bold;text-align: center;padding: 20px;">Login</p>
+          <input type="text" class="form-control" v-model="userName" placeholder="UserName"/>
+          <input type="password" class="form-control" v-model="userPwd" placeholder="Password"/>
+          <div style="width: 100%">
+
+            <p v-show="loginErr">账户密码错误</p>
+        <mt-button @click.native="login('2')" type="primary" style="width:100%;margin: 20px 0">登录</mt-button>
+          </div>
+
+        </div>
+      </mt-popup>
+      <!--未登录状态end-->
+
+      <!--登录状态-->
+      <div class="container" v-show="infoVisible" style="margin-top: 10px">
+        <div class="row" style="padding-bottom: 20px;">
           <div class="col-xs-2">
             <img class="img-circle" src="/static/images/tx.jpg" width="50px"/>
           </div>
           <div class="col-xs-9">
             <p>林</p>
-            <span class="address">管理收货地址 ></span>
+            <span class="address"><router-link to="address">管理收货地址 ></router-link></span>
           </div>
           <div class="col-xs-1" style="line-height: 50px;text-align: right"> ></div>
         </div>
+      <!--登录状态end-->
 
         <div class="row" style="border-top:1px solid gainsboro;border-bottom:1px solid gainsboro;text-align: center ">
           <div class="col-xs-6" style="border-right: 1px solid gainsboro;padding: 20px 0">
@@ -46,17 +75,59 @@
           <p>浏览历史</p>
         </div>
       </div>
+
+      <div class="myJb">
+        <p>
+        我的金币：9999
+        </p>
+      </div>
     </div>
+
+
     <nav-food></nav-food>
   </div>
 </template>
 
 <script>
   import navFood from '@/views/NavFood'
+  import axios from 'axios'
   export default {
     name: "Me",
+    data(){
+      return{
+        userName:'',
+        userPwd:'',
+        popupVisible:false,
+        infoVisible:false,
+        loginErr:false//登录失败显示
+
+      }
+    },
     components:{
       'nav-food':navFood
+    },
+    methods:{
+      login(str){
+
+        if(str=='1'){
+          this.popupVisible = !this.popupVisible
+        }else if(str=='2') {
+          axios.post('/users/login',{userName:this.userName,userPwd:this.userPwd}).then((response)=>{
+            let res = response.data;
+            if(res.status=='0' && res.result=='suc'){
+              this.infoVisible =!this.infoVisible
+              this.popupVisible = !this.popupVisible
+              this.loginErr=false
+            }else {
+              this.loginErr = true
+            }
+          })
+
+        }
+      },
+      loginExit(){
+        this.infoVisible =!this.infoVisible
+      }
     }
   }
 </script>
@@ -65,14 +136,23 @@
   .header {
     background: rgba(0, 0, 0, 0.8);
     text-align: center;
-    p {
+    display: flex;
+    span {
+      flex: 2;
       color: white;
       font-size: 18px;
       padding: 10px 0;
+      line-height: 25px;
     }
-
+    .exit{
+      flex: 1;
+      color: white;
+      font-size: 14px;
+    }
   }
-
+  .hiddenDiv{
+    visibility: hidden;
+  }
   .one {
     .address {
       background: #0f0f0f;
@@ -81,6 +161,12 @@
       padding: 5px;
       font-size: 10px;
     }
+  }
+
+  .myJb{
+    margin: 0px 15px 15px 15px;
+    border-bottom: 1px solid gainsboro;
+    text-align: center;
   }
 
 </style>

@@ -119,18 +119,9 @@
                 axios.post('/users/cartlistAdd',{product:this.product,styleValue:this.styleValue,count:this.count,docLength:res.result}).then((response)=>{
                   let res2 = response.data;
                   if(res2.status =='0'){
-                      // this.$layer.open({
-                      //   content: '添加成功'
-                      //   ,skin: 'msg'
-                      //   ,time: 1 //1秒后自动关闭
-                      // });
+                    this.$toast('添加成功')
                   }else {
-                    // this.$layer.open({
-                    //   content: '添加失败'
-                    //   ,skin: 'msg'
-                    //   ,time: 1 //1秒后自动关闭
-                    // });
-                    // console.log('插入失败')
+                    this.$toast('添加失败')
                   }
                 })
 
@@ -139,19 +130,9 @@
               axios.post('/users/cartlistAdd',{product:this.product,count:this.count,styleValue:this.styleValue,docLength:res.result}).then((response)=>{
                 let res2 = response.data;
                 if(res2.status =='0'){
-
-                    // this.$layer.open({
-                    //   content: '添加成功'
-                    //   ,skin: 'msg'
-                    //   ,time: 2 //2秒后自动关闭
-                    // });
+                  this.$toast('添加成功')
                 }else {
-                  // this.$layer.open({
-                  //   content: '添加失败'
-                  //   ,skin: 'msg'
-                  //   ,time: 2 //2秒后自动关闭
-                  // });
-                  // console.log('插入失败')
+                  this.$toast('添加失败')
                 }
               })
             }

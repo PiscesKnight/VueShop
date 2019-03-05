@@ -3,6 +3,40 @@ var router = express.Router();
 var User = require('../models/users')
 
 /* GET users listing. */
+//用户登录注册
+router.post('/login',(req,res,next)=>{
+  var param={
+     userName : req.body.userName,
+     userPwd : req.body.userPwd
+  }
+
+  User.findOne({$or:[{'username':param.userName,'userpwd':param.userPwd}]},(err,doc)=>{
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message
+      })
+    }else {
+      if(doc){
+        res.json({
+          status:'0',
+          msg:'',
+          result:'suc'
+        })
+      }else {
+        res.json({
+          status:'0',
+          msg:'',
+          result:0
+        })
+      }
+
+    }
+  })
+})
+
+
+//获取购物车列表
 router.get('/cartlist',(req,res,next)=>{
   User.find({}, (err, doc) =>{
     if(err){

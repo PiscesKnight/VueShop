@@ -60,7 +60,6 @@
 <script>
   import axios from 'axios'
   import HeaderTop from "../views/HeaderTop";
-  import {MessageBox} from 'mint-ui'
 
     export default {
         name: "CarList",
@@ -178,9 +177,8 @@
             axios.post('/users/carDel',{_id:this.carList[index]._id}).then((response)=>{
                 let res = response.data;
                 if(res.status=='0'){
-                  this.$messagebox.alert("删除成功").then(action=>{
+                  this.$toast("删除成功")
                     this.getCarList()
-                  })
                 }
             })
           })
