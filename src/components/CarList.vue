@@ -13,7 +13,7 @@
       <div class="row" v-for="item in carList" ref="item">
         <div class="col-xs-1" style="line-height: 123px">
           <div class="" @change="clickCheck(item)">
-            <label><input type="checkbox" :checked="item.checked" ></label>
+            <label><input type="checkbox" ref="checkbox" :checked="item.checked" ></label>
           </div>
         </div>
         <div class="col-xs-4" style="line-height: 133px">
@@ -42,8 +42,8 @@
     <!--底部-->
     <div class="carlist-fooder ">
       <div class="row">
-        <div class="checkbox col-xs-3" >
-          <label><input type="checkbox" value="">全选</label>
+        <div class="checkbox col-xs-3" @click="clickCheckAll">
+          <label><input type="checkbox" ref="checkboxall" :checked="checkboxAllStatus">全选</label>
         </div>
         <div class="col-xs-6">
           <p style="text-align: right">总计：￥{{this.sum}}.00</p>
@@ -71,6 +71,18 @@
       },
       mounted () {
         this.getCarList()
+      },
+      computed:{
+          checkboxAllStatus:function(){//判断是否勾选数量与购物车数量一致，一致为全选
+            return this.checkCount == this.carList.length
+          },
+        checkCount:function () {
+          var i =0;
+          this.carList.forEach((item)=>{
+            if(item.checked)i++
+          })
+          return i
+        }
       },
       methods:{
         //  获取购物车列表
@@ -127,6 +139,24 @@
             axios.post('/users/carEdit',{productId:item.productId,count:item.count,styleValue:item.productStyle,checked:item.checked}).then((response)=>{
               let res = response.data;
             })
+        },
+      //  全选按钮
+        clickCheckAll(){
+         if(this.$refs.checkboxall.checked){
+           for(let i =0;i<this.$refs.checkbox.length;i++){
+             this.$refs.checkbox[i].checked =  true
+           }
+           axios.post('/users/carEditAll',{checked:this.$refs.checkboxall.checked}).then((response)=>{
+             let res = response.data;
+           })
+         }else {
+           for(let i =0;i<this.$refs.checkbox.length;i++){
+             this.$refs.checkbox[i].checked =  false
+           }
+           axios.post('/users/carEditAll',{checked:this.$refs.checkboxall.checked}).then((response)=>{
+             let res = response.data;
+           })
+         }
         }
       }
     }

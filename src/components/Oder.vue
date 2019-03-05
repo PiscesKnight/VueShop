@@ -71,7 +71,7 @@
       <div style="display: flex;padding: 10px 20px">
 
       <span style="flex: 1;text-align: right;line-height: 34px;font-size: 16px;color: white;margin-right: 20px">总计：￥{{this.priceTotals}}.00</span>
-        <button class="btn btn-danger"><router-link :to="{ name: 'pay', params: { priceTotals: this.priceTotals}}">确定下单</router-link></button>
+        <button class="btn btn-danger"><router-link :to="{ name: 'pay', query: { priceTotals: this.priceTotals}}">确定下单</router-link></button>
       </div>
     </div>
     <!--底部end-->

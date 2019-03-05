@@ -97,7 +97,6 @@ router.post('/cartlistAdd',function(req,res,next){
           })
       }else {
         if(doc==null){//相同的产品没有一样的规格，更新数量
-          console.log('doc==null:'+styleValue)
           User.updateOne(
             {
               'userid': 'U001'
@@ -137,7 +136,6 @@ router.post('/cartlistAdd',function(req,res,next){
             }
           )
         }else {//相同产品单是不同规格，添加新产品
-          console.log('doc!=null'+styleValue)
           User.updateOne({'carlist':{$elemMatch:{'productId':product.productId,'productStyle.value':styleValue}}},{$inc:{'carlist.$.count':count}},(err,doc)=> {
             if(err){
               res.json({
@@ -173,10 +171,6 @@ router.post('/carEdit',(req,res,next)=>{
         msg:err.message
       })
     }else {
-      console.log('productId:'+productId)
-      console.log('productStyleValue:'+styleValue)
-      console.log('count:'+count)
-      console.log('checked:'+checked)
       res.json({
         status:'0',
         msg:'',
@@ -186,11 +180,37 @@ router.post('/carEdit',(req,res,next)=>{
   })
 })
 
-//添加订单列表
-router.post('/orderCreate',(req,res,next)=>{
+router.post('/carEditAll',(req,res,next)=>{
+  var checked = req.body.checked
+  User.findOne({'userid':'U001'},(err,doc)=>{
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message
+      })
+    }else {
+      if(doc){
+        doc.carlist.forEach(function(item){
+          item.checked = checked
+          item.checkedAll = checked
+        })
 
-  User.uppateOne({},{},(err,doc)=>{
-
+        doc.save(function (err1,doc1) {
+          if(err1){
+            res.json({
+              status:'1',
+              msg:err.message
+            })
+          }else {
+            res.json({
+              status:'0',
+              msg:'',
+              result:'suc'
+            })
+          }
+        })
+      }
+    }
   })
 })
 
