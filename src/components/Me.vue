@@ -22,7 +22,7 @@
           <input type="text" class="form-control" v-model="userName" placeholder="UserName"/>
           <input type="password" class="form-control" v-model="userPwd" placeholder="Password"/>
           <div style="width: 100%">
-
+            <p v-show="loginNull">用户名或密码不能为空</p>
             <p v-show="loginErr">账户密码错误</p>
         <mt-button @click.native="login('2')" type="primary" style="width:100%;margin: 20px 0">登录</mt-button>
           </div>
@@ -38,7 +38,7 @@
             <img class="img-circle" src="/static/images/tx.jpg" width="50px"/>
           </div>
           <div class="col-xs-9">
-            <p>林</p>
+            <p>d</p>
             <span class="address"><router-link to="address">管理收货地址 ></router-link></span>
           </div>
           <div class="col-xs-1" style="line-height: 50px;text-align: right"> ></div>
@@ -95,29 +95,57 @@
     name: "Me",
     data(){
       return{
+        userInfo:[],
         userName:'',
         userPwd:'',
         popupVisible:false,
         infoVisible:false,
-        loginErr:false//登录失败显示
-
+        loginErr:false,//登录失败显示
+        loginNull:false
       }
     },
     components:{
       'nav-food':navFood
     },
+    mounted(){
+    //  检验是否已登录
+      this.checkLogin()
+    },
     methods:{
+      checkLogin(){
+        axios.get('/users/checkLogin').then((response)=>{
+          let res = response.data;
+          if(res.status=='0'){
+            this.infoVisible =!this.infoVisible
+          }else {
+            this.infoVisible =false
+          }
+        })
+      },
       login(str){
-
+        //点击页面上的登录图案
         if(str=='1'){
           this.popupVisible = !this.popupVisible
-        }else if(str=='2') {
+        }
+        //点击弹出的登录按钮
+        else if(str=='2') {
+          //判断输入是否为空
+          if(!this.userName || !this.userPwd){
+              this.loginNull = true
+            this.loginErr = false
+              return;
+          }else {
+            this.loginNull = false
+          }
           axios.post('/users/login',{userName:this.userName,userPwd:this.userPwd}).then((response)=>{
             let res = response.data;
-            if(res.status=='0' && res.result=='suc'){
+            if(res.status=='0'){
               this.infoVisible =!this.infoVisible
               this.popupVisible = !this.popupVisible
               this.loginErr=false
+              this.userInfo = res.result
+
+              this.$toast('登录成功')
             }else {
               this.loginErr = true
             }
@@ -126,7 +154,14 @@
         }
       },
       loginExit(){
-        this.infoVisible =!this.infoVisible
+        axios.post('/users/loginOut').then((response)=>{
+          let res =response.data;
+          if(res.status=='0'){
+            this.userInfo = []
+            this.infoVisible =!this.infoVisible
+          }
+        })
+
       }
     }
   }

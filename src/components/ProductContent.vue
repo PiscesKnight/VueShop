@@ -120,6 +120,9 @@
                   let res2 = response.data;
                   if(res2.status =='0'){
                     this.$toast('添加成功')
+                  }else if(res2.status=='10001'){
+                    this.$toast('请登录后再添加商品')
+                    this.$router.push({path:'/me',query:{productId:this.product.productId}})
                   }else {
                     this.$toast('添加失败')
                   }
@@ -131,6 +134,8 @@
                 let res2 = response.data;
                 if(res2.status =='0'){
                   this.$toast('添加成功')
+                }else if(res2.status=='10001'){
+                  this.$toast('请登录后再添加商品')
                 }else {
                   this.$toast('添加失败')
                 }

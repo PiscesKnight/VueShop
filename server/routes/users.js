@@ -18,16 +18,38 @@ router.post('/login',(req,res,next)=>{
       })
     }else {
       if(doc){
+        console.log('userid:'+doc.userid)
+        console.log('username:'+doc.username)
+        console.log('nickname:'+doc.nickname)
+        console.log('userjb:'+doc.userjb)
+
+        res.cookie('userid',doc.userid,{
+          path:'/',
+          maxAge:1000*60*60  //存一个小时
+        })
+        res.cookie('nickname',doc.nickname,{
+          path:'/',
+          maxAge:1000*60*60  //存一个小时
+        })
+        res.cookie('userjb',doc.userjb,{
+          path:'/',
+          maxAge:1000*60*60  //存一个小时
+        })
+        res.cookie('usercover',doc.usercover,{
+          path:'/',
+          maxAge:1000*60*60  //存一个小时
+        })
+        // req.session.user = doc
         res.json({
           status:'0',
           msg:'',
-          result:'suc'
+          result:
+             doc.userid
         })
       }else {
         res.json({
-          status:'0',
-          msg:'',
-          result:0
+          status:'1',
+          msg:'用户名或密码错误'
         })
       }
 
@@ -35,6 +57,33 @@ router.post('/login',(req,res,next)=>{
   })
 })
 
+//退出登录
+router.post('/loginOut',(req,res,next)=>{
+  res.cookie('userid','',{
+    path:'/',
+    maxAge:0  //删除cookie存的值
+  })
+  res.json({
+    status:'0',
+    msg:'',
+    result:''
+  })
+})
+
+//检验用户是否登录，保持登录状态
+router.get('/checkLogin',function (req,res,next) {
+  if(req.cookies.userid){
+    res.json({
+      status:'0',
+      msg:'',
+      result:[
+        {'nickname':req.cookies.nickname},
+        {'usercover':req.cookies.usercover},
+        {'userjb':req.cookies.userjb},
+        ]
+    })
+  }
+})
 
 //获取购物车列表
 router.get('/cartlist',(req,res,next)=>{

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "constantinople": "^3.1.2",
     "ejs": "^2.6.1",
     "es6-promise": "^4.2.5",
