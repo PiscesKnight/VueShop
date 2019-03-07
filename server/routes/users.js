@@ -18,11 +18,6 @@ router.post('/login',(req,res,next)=>{
       })
     }else {
       if(doc){
-        console.log('userid:'+doc.userid)
-        console.log('username:'+doc.username)
-        console.log('nickname:'+doc.nickname)
-        console.log('userjb:'+doc.userjb)
-
         res.cookie('userid',doc.userid,{
           path:'/',
           maxAge:1000*60*60  //存一个小时
@@ -43,8 +38,11 @@ router.post('/login',(req,res,next)=>{
         res.json({
           status:'0',
           msg:'',
-          result:
-             doc.userid
+          result:{
+             nickname:doc.nickname,
+            usercover:doc.usercover,
+            userjb:doc.userjb
+          }
         })
       }else {
         res.json({
@@ -62,6 +60,18 @@ router.post('/loginOut',(req,res,next)=>{
   res.cookie('userid','',{
     path:'/',
     maxAge:0  //删除cookie存的值
+  }),
+    res.cookie('nickname','',{
+      path:'/',
+      maxAge:0  //删除cookie存的值
+    })
+  res.cookie('usercover','',{
+    path:'/',
+    maxAge:0  //删除cookie存的值
+  })
+  res.cookie('userjb','',{
+    path:'/',
+    maxAge:0  //删除cookie存的值
   })
   res.json({
     status:'0',
@@ -76,11 +86,11 @@ router.get('/checkLogin',function (req,res,next) {
     res.json({
       status:'0',
       msg:'',
-      result:[
-        {'nickname':req.cookies.nickname},
-        {'usercover':req.cookies.usercover},
-        {'userjb':req.cookies.userjb},
-        ]
+      result:{
+        'nickname':req.cookies.nickname,
+        'usercover':req.cookies.usercover,
+        'userjb':req.cookies.userjb
+    }
     })
   }
 })

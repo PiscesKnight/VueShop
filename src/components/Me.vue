@@ -38,7 +38,7 @@
             <img class="img-circle" src="/static/images/tx.jpg" width="50px"/>
           </div>
           <div class="col-xs-9">
-            <p>d</p>
+            <p>{{userInfo.nickname}}</p>
             <span class="address"><router-link to="address">管理收货地址 ></router-link></span>
           </div>
           <div class="col-xs-1" style="line-height: 50px;text-align: right"> ></div>
@@ -78,7 +78,7 @@
 
       <div class="myJb">
         <p>
-        我的金币：9999
+        我的金币：{{userInfo.userjb}}
         </p>
       </div>
     </div>
@@ -117,6 +117,7 @@
           let res = response.data;
           if(res.status=='0'){
             this.infoVisible =!this.infoVisible
+            this.userInfo = res.result
           }else {
             this.infoVisible =false
           }
@@ -144,7 +145,6 @@
               this.popupVisible = !this.popupVisible
               this.loginErr=false
               this.userInfo = res.result
-
               this.$toast('登录成功')
             }else {
               this.loginErr = true

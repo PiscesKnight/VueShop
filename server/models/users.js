@@ -5,6 +5,9 @@ var userSchema = new Schema({
       userid: String,
       username: String,
       userpwd:String,
+  nickname:String,
+    usercover:String,
+    userjb:Number,
       carlist: [
         {
           productId : String,
