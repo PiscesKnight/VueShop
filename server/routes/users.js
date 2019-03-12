@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/users')
+require('./../utils/DateFormat')
 
 /* GET users listing. */
 //用户登录注册
@@ -97,7 +98,8 @@ router.get('/checkLogin',function (req,res,next) {
 
 //获取购物车列表
 router.get('/cartlist',(req,res,next)=>{
-  User.find({}, (err, doc) =>{
+  var userid = req.cookies.userid
+  User.find({userid:userid}, (err, doc) =>{
     if(err){
           res.json({
             status:'1',
@@ -145,7 +147,7 @@ router.post('/cartlistAdd',function(req,res,next){
   if(docLength == 0){
     User.updateOne(
       {
-        'userid': 'U001'
+        'userid': req.cookies.userid
       },
       {
         $addToSet: {
@@ -192,7 +194,7 @@ router.post('/cartlistAdd',function(req,res,next){
         if(doc==null){//相同的产品没有一样的规格，更新数量
           User.updateOne(
             {
-              'userid': 'U001'
+              'userid': req.cookies.userid
             },
             {
               $addToSet: {
@@ -275,7 +277,8 @@ router.post('/carEdit',(req,res,next)=>{
 
 router.post('/carEditAll',(req,res,next)=>{
   var checked = req.body.checked
-  User.findOne({'userid':'U001'},(err,doc)=>{
+  var userid = req.cookies.userid
+  User.findOne({'userid':userid},(err,doc)=>{
     if(err){
       res.json({
         status:'1',
@@ -310,8 +313,9 @@ router.post('/carEditAll',(req,res,next)=>{
 //购物车删除商品
 router.post('/carDel',(req,res,next)=>{
   var _id = req.body._id
+  var userid = req.cookies.userid
 
-  User.updateOne({'userid':'U001'},{$pull:{carlist:{_id:_id}}},(err,doc)=>{
+  User.updateOne({'userid':userid},{$pull:{carlist:{_id:_id}}},(err,doc)=>{
     if(err){
       res.json({
         status:'1',
@@ -330,21 +334,69 @@ router.post('/carDel',(req,res,next)=>{
   )
 })
 
-//订单列表
-router.post('/oderlist',(req,res,next)=>{
-
-  User.findOne({'carlist.checked':true},'carlist.checked',function (err,doc) {
+//生成订单
+router.post('/createOrder',(req,res,next)=>{
+  var orderTotal = req.body.orderTotal
+  var userid = req.cookies.userid
+  User.findOne({userid:userid},(err,doc)=>{
       if(err){
         res.json({
           status:'1',
-          msg:err.msg,
-
+          msg:err.message,
+          result:''
         })
       }else {
-        res.json({
-          status:'0',
-          msg:'',
-          result:doc
+        var productlist =[]
+        doc.carlist.forEach((item)=>{
+          if(item.checked){
+            productlist.push(item)
+          }
+        })
+
+        var orderId = '001'+Math.floor(Math.random()*100)+new Date().Format('yyyyMMddhhmmss')
+        var createDate = new Date().Format('yyyy-MM-dd-hh-mm-ss')
+        //创建订单
+        var order = {
+          orderId:orderId,
+          orderTotal:orderTotal,
+          productlist:productlist,
+          orderStatus:'1',
+          createDate:createDate
+        }
+
+        doc.orderlist.push(order)
+
+        doc.save(function (err1,doc1) {
+          if(err1){
+            res.json({
+              status:'1',
+              msg:err1.message,
+              result:''
+            })
+          }else {
+            //  删除购物车商品
+            User.updateOne({'userid':userid},{$pull:{carlist:{checked:true}}},(err,doc)=>{
+              if(err){
+                res.json({
+                  status:'1',
+                  msg:err.message
+                })
+
+              }else {
+                res.json({
+                  status:'0',
+                  msg:'',
+                  result:{
+                    orderId:order.orderId,
+                    orderTotal:order.orderTotal
+                  }
+                })
+              }
+            })
+
+
+
+          }
         })
       }
   })

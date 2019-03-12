@@ -46,14 +46,19 @@
       <!--登录状态end-->
 
         <div class="row" style="border-top:1px solid gainsboro;border-bottom:1px solid gainsboro;text-align: center ">
+          <router-link to="carlist">
           <div class="col-xs-6" style="border-right: 1px solid gainsboro;padding: 20px 0">
             <img src="../assets/shopcart.svg" width="25px">
-            <span style="line-height: 25px">购物车</span>
+            <span style="line-height: 25px;color: black">购物车</span>
           </div>
-          <div class="col-xs-6" style="padding: 20px 0">
-            <img src="../assets/my-order.svg" width="25px">
-            <span style="line-height: 25px">我的订单</span>
-          </div>
+          </router-link>
+          <router-link to="orderlist">
+            <div class="col-xs-6" style="padding: 20px 0">
+              <img src="../assets/my-order.svg" width="25px">
+              <span style="color:black;line-height: 25px">我的订单</span>
+            </div>
+          </router-link>
+
         </div>
       </div>
 

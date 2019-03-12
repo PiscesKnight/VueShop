@@ -25,53 +25,22 @@
     </div>
 
     <!--收货地址end-->
-  <!--产品信息-->
-  <div class="oder-productdiv" v-for="item in orderList" v-if="item.checked==true" >
-    <div>
-      <img :src="'/static/images/'+item.productCover" width="80px"/>
-    </div>
-    <div class="oder-productinfo">
-      <p>{{item.productName}}</p>
-      <div style="display: flex;">
-        <p style="flex: 1">颜色：{{item.productStyle[0].value[0]}}</p>
-        <p>x{{item.count}}</p>
-      </div>
-    </div>
-  </div>
-  <!--产品信息end-->
 
-    <!--订单其他信息-->
-    <div>
-      <div style="display: flex;border-bottom: 1px solid #e4e1e1;">
-      <p style="padding: 15px;font-size: 16px;flex: 1">配送方式：</p>
+    <!--订单信息-->
+    <order-item :orderList="orderList" :priceSum="priceSum" :freight="freight" :jb="jb" :priceTotals="priceTotals">
+      <div slot="distribution" style="display: flex;border-bottom: 1px solid #e4e1e1;">
+        <p style="padding: 15px;font-size: 16px;flex: 1">配送方式：</p>
         <p style="padding: 15px;font-size: 16px">包邮</p>
       </div>
-
-      <div class="oder-info-div">
-        <p class="oder-info-p">商品金额</p>
-        <p class="oder-info-p2">￥{{this.priceSum}}.00</p>
-      </div>
-      <div class="oder-info-div">
-        <p class="oder-info-p">金币抵扣：</p>
-        <p class="oder-info-p2">-￥{{this.jb}}.00</p>
-      </div>
-      <div class="oder-info-div">
-        <p class="oder-info-p">运费</p>
-        <p class="oder-info-p2">+￥{{this.freight}}.00</p>
-      </div>
-      <div class="oder-info-div">
-        <p class="oder-info-p" style="color: black">实付款：</p>
-        <p class="oder-info-p2" style="color: red">￥{{this.priceTotals}}.00</p>
-      </div>
-    </div>
-    <!--订单其他信息end-->
+    </order-item>
+    <!--订单信息end-->
 
     <!--底部-->
     <div class="navbar-fixed-bottom" style="height: 50px;background: black">
       <div style="display: flex;padding: 10px 20px">
 
       <span style="flex: 1;text-align: right;line-height: 34px;font-size: 16px;color: white;margin-right: 20px">总计：￥{{this.priceTotals}}.00</span>
-        <button class="btn btn-danger"><router-link :to="{ name: 'pay', query: { priceTotals: this.priceTotals}}">确定下单</router-link></button>
+        <button @click="orderConfirm" class="btn btn-danger">确定下单</button>
       </div>
     </div>
     <!--底部end-->
@@ -81,6 +50,7 @@
 <script>
   import HeaderTop from "../views/HeaderTop";
   import axios from 'axios'
+  import OrderItem from "../views/OrderItem";
     export default {
         name: "Oder",
       data(){
@@ -94,7 +64,7 @@
       props:{
 
       },
-      components: {HeaderTop},
+      components: {OrderItem, HeaderTop},
       mounted:function () {
         this.getOrderList()
       },
@@ -124,30 +94,22 @@
               this.orderList = []
             }
           })
-        }
+        },
+        //确定订单
+        orderConfirm(){
+            axios.post('/users/createOrder',{orderTotal:this.priceTotals}).then((response)=>{
+              let res = response.data
+              if(res.status=='0'){
+                console.log(res.result.orderId)
+                console.log(res.result.orderTotal)
 
+              }
+            })
+        }
       }
     }
 </script>
 
 <style lang="scss">
-  .oder-productdiv{
-    display: flex;background: rgba(0,0,0,0.8);padding: 10px 15px 0 15px;line-height: 30px;
-    .oder-productinfo{
-      flex: 1;color: white;padding: 5px 10px
-  }
-  }
 
-
-  .oder-info-div{
-    display: flex;
-    .oder-info-p,.oder-info-p2{
-      font-size: 16px;
-      padding: 15px 20px 0 15px;
-      color: #aca8a8;
-    }
-    .oder-info-p{
-      flex: 1;
-    }
-  }
 </style>

@@ -7,9 +7,10 @@ import Me from '@/components/Me'
 import IndexContent from '@/components/IndexContent'
 import ProductContent from '@/components/ProductContent'
 import CarList from '@/components/CarList'
-import Oder from '@/components/Oder'
+import Order from '@/components/Order'
 import Address from '@/components/Address'
 import Pay from '@/components/Pay'
+import OrderList from '@/components/OrderList'
 
 Vue.use(Router)
 
@@ -22,7 +23,7 @@ export default new Router({
       component: NavFood,
       children: [
         {
-          path: 'index',
+          path: '',
           name: 'index',
           component: Index
         },
@@ -53,9 +54,9 @@ export default new Router({
       component: CarList
     },
     {
-      path:'/oders',
-      name:'oders',
-      component:Oder
+      path:'/orders',
+      name:'orders',
+      component:Order
     },
     {
       path:'/address',
@@ -66,6 +67,11 @@ export default new Router({
       path:'/pay',
       name:'pay',
       component:Pay
+    },
+    {
+      path:'/orderlist',
+      name:'/orderlist',
+      component:OrderList
     }
   ]
 })

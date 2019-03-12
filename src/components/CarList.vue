@@ -49,7 +49,7 @@
         <div class="col-xs-6">
           <p style="text-align: right">总计：￥{{this.sum}}.00</p>
         </div>
-        <div class="col-xs-3"><router-link to="oders"><button class="btn btn-danger">去结算</button></router-link></div>
+        <div class="col-xs-3"><router-link to="orders"><button class="btn btn-danger">去结算</button></router-link></div>
       </div>
     </div>
     <!--底部end-->
@@ -173,7 +173,7 @@
           }
         },
         delProduct(index){
-          this.$messagebox.confirm("确定删除此商品?").then(action => {
+          this.$messagebox.confirm("确定删除此商品?").then(() => {
             axios.post('/users/carDel',{_id:this.carList[index]._id}).then((response)=>{
                 let res = response.data;
                 if(res.status=='0'){
