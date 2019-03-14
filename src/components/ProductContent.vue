@@ -144,7 +144,7 @@
       },
       //立即购买
       toOder(){
-          this.$router.push({name:'orders',params:{product:this.product,count:this.count,style:this.styleValue}})
+          this.$router.push({name:'orders',query:{count:this.count,style:this.styleValue}})
       }
     },
 

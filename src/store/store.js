@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     product: []
   },
-  plugins: [createPersistedState()],
+    plugins: [createPersistedState()],
   mutations: {
     getProductList(state, list) {
       state.product = list;

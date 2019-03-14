@@ -2,7 +2,8 @@
     <!--订单产品信息-->
   <!--产品信息-->
   <div>
-    <!--item.checked  用于加载购物车列表时勾选的商品-->
+
+    <!--立即购买-->
     <div class="oder-productdiv"  v-show="isBuy">
       <div>
         <img :src="'/static/images/'+orderList.productCover" width="80px"/>
@@ -15,8 +16,10 @@
         </div>
       </div>
     </div>
+    <!--立即购买end-->
 
-
+    <!--购物车列表结算-->
+    <!--item.checked  用于加载购物车列表时勾选的商品-->
   <div class="oder-productdiv" v-show="!isBuy" v-for="item in orderList" v-if="item.checked==true" >
     <div>
       <img :src="'/static/images/'+item.productCover" width="80px"/>
@@ -29,6 +32,7 @@
       </div>
     </div>
   </div>
+    <!--购物车列表结算end-->
   <!--产品信息end-->
 
   <!--订单其他信息-->

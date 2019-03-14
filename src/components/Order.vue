@@ -52,6 +52,7 @@
   import HeaderTop from "../views/HeaderTop";
   import axios from 'axios'
   import OrderItem from "../views/OrderItem";
+  import store from '@/store/store'
 
   export default {
     name: "Oder",
@@ -81,11 +82,12 @@
       },
       getOrder() {
         //判断是否有参数值
-        if (this.$route.params.count) {
+        if (this.$route.query.count) {
           this.isBuy = true
-          this.orderList = this.$route.params.product
-          this.priceSum = this.$route.params.product.productPrice * this.$route.params.count
-          this.params.push(this.$route.params.count,this.$route.params.style)
+          this.orderList = this.$store.state.product
+          console.log(this.orderList)
+          this.priceSum = this.orderList.productPrice * this.$route.query.count
+          this.params.push(this.$route.query.count,this.$route.query.style)
         }
         else {
           this.isBuy = false
