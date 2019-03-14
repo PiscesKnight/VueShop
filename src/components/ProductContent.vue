@@ -45,7 +45,6 @@
           <!--数量选择end-->
 
         <div style="padding-top: 15px;margin-top:10px;border-top: 1px solid gainsboro;text-align: center">
-
         <button v-show="isAddCart" class="btn" style="width: 50%;background-color: black;color: white;margin-bottom: 15px" @click="addCar">加入购物车</button>
         <button v-show="isBuy" class="btn" style="width: 50%;background-color: red;color: white;margin-bottom: 15px" @click="toOder">立即购买</button>
         </div>
@@ -145,7 +144,7 @@
       },
       //立即购买
       toOder(){
-          this.$router.push('/oders')
+          this.$router.push({name:'orders',params:{product:this.product,count:this.count,style:this.styleValue}})
       }
     },
 

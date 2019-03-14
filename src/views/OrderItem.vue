@@ -3,7 +3,21 @@
   <!--产品信息-->
   <div>
     <!--item.checked  用于加载购物车列表时勾选的商品-->
-  <div class="oder-productdiv" v-for="item in orderList" v-if="item.checked==true" >
+    <div class="oder-productdiv"  v-show="isBuy">
+      <div>
+        <img :src="'/static/images/'+orderList.productCover" width="80px"/>
+      </div>
+      <div class="oder-productinfo">
+        <p>{{orderList.productName}}</p>
+        <div style="display: flex;">
+          <p style="flex: 1">颜色：{{params[1]}}</p>
+          <p>x{{params[0]}}</p>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="oder-productdiv" v-show="!isBuy" v-for="item in orderList" v-if="item.checked==true" >
     <div>
       <img :src="'/static/images/'+item.productCover" width="80px"/>
     </div>
@@ -51,7 +65,9 @@
           'priceSum',
           'freight',
           'jb',
-          'priceTotals'
+          'priceTotals',
+          'isBuy',//立即购买按钮跳转
+          'params'
         ]
     }
 </script>

@@ -11,6 +11,7 @@ import Order from '@/components/Order'
 import Address from '@/components/Address'
 import Pay from '@/components/Pay'
 import OrderList from '@/components/OrderList'
+import PaySuccess from '@/components/PaySuccess'
 
 Vue.use(Router)
 
@@ -70,8 +71,13 @@ export default new Router({
     },
     {
       path:'/orderlist',
-      name:'/orderlist',
+      name:'orderlist',
       component:OrderList
+    },
+    {
+      path:'/pay/paysuccess',
+      name:'paysuccess',
+      component:PaySuccess
     }
   ]
 })

@@ -96,10 +96,10 @@ router.get('/checkLogin',function (req,res,next) {
   }
 })
 
-//获取购物车列表
+//获取购物车,订单列表
 router.get('/cartlist',(req,res,next)=>{
   var userid = req.cookies.userid
-  User.find({userid:userid}, (err, doc) =>{
+  User.findOne({userid:userid}, (err, doc) =>{
     if(err){
           res.json({
             status:'1',
@@ -393,12 +393,32 @@ router.post('/createOrder',(req,res,next)=>{
                 })
               }
             })
-
-
-
           }
         })
       }
+  })
+})
+
+//订单支付
+router.post('/payOrder',(req,res,next)=>{
+  var userid = req.cookies.userid
+  var userjb = req.body.userjd
+  var userPwd = req.body.userPwd
+  var orderId = req.body.orderId
+  User.updateOne({userid:userid,userpwd:userPwd,'orderlist.orderId':orderId},{userjb:userjb,'orderlist.$.orderStatus':'2'},(err,doc)=>{
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message,
+        result:''
+      })
+    }else {
+      res.json({
+        status:'0',
+        msg:'',
+        result:doc
+      })
+    }
   })
 })
 

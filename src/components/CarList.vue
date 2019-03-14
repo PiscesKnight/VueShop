@@ -92,7 +92,7 @@
             axios.get("/users/cartlist").then((result)=>{
               var res = result.data;
               if(res.status == '0'){
-                this.carList = res.result.users[0].carlist
+                this.carList = res.result.users.carlist
                 //初始化新加入购物车的数据
                 this.sum = 0;//初始化
                 for(var i=0;i<this.carList.length;i++){

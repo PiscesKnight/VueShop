@@ -20,8 +20,8 @@
     <div class="navbar-fixed-bottom" style="height: 50px;background: black">
       <div style="display: flex;padding: 10px 20px">
 
-        <span style="flex: 1;text-align: right;line-height: 34px;font-size: 16px;color: white;margin-right: 20px">￥{{this.priceTotal}}.00</span>
-        <button class="btn btn-danger">支付</button>
+        <span style="flex: 1;text-align: right;line-height: 34px;font-size: 16px;color: white;margin-right: 20px">￥{{this.orderTotal}}.00</span>
+        <button @click="pay" class="btn btn-danger">支付</button>
       </div>
     </div>
     <!--底部end-->
@@ -30,29 +30,69 @@
 
 <script>
     import HeaderTop from "../views/HeaderTop";
+    import axios from 'axios'
+
     export default {
         name: "Pay",
       data(){
           return{
-            jb:999999
+            jb:9999,
+            orderTotal:this.$route.query.orderTotal,
+            orderId:this.$route.query.orderId
           }
       },
       components: {HeaderTop},
       computed:{
           priceTotal:function () {
-            let sum = this.$route.query.priceTotals-this.jb
+            let sum = this.jb-this.orderTotal
             if(sum<=0){
               return 0
             }else {
               return sum
             }
-
           }
       },
       methods:{
           init(){
 
-          }
+          },
+        pay(){
+            this.$messagebox.confirm('',{
+              message:'请输入密码',
+              showInput:true,
+              inputType:'password',
+              showConfirmButton:true,
+              showCancelButton:true,
+              cancelButtonClass:'cancelButton',
+              confirmButtonClass:'confirmButton',
+              confirmButtonText:'确定',
+              cancelButtonText:'暂不'
+            }).then(({value})=>{
+              if(value==null){
+                this.$toast('密码不能为空')
+                return
+              }
+              if(this.priceTotal>=0){
+                axios.post('/users/payOrder',{orderId:this.orderId,userPwd:value,userjd:this.priceTotal}).then((response)=>{
+                  let res = response.data
+                  if(res.status=='0') {
+                    if (res.result.n==1 && res.result.nModified==1 && res.result.ok==1) {
+                      this.$toast('支付成功')
+                    } else {
+                      this.$toast('密码错误，请重新输入')
+                    }
+                  }
+                })
+              }else {
+                console.log(this.$messagebox.confirm)
+                this.$toast('金币不足')
+              }
+            }).catch(err=>{
+              if(err == 'cancel'){
+                this.$toast('支付取消')
+              }
+            })
+        }
       }
     }
 </script>

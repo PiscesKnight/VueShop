@@ -62,10 +62,7 @@
             this.ladybro= res.ladybro;
             this.buddy = res.buddy;
             this.tabsContent.push(this.parents,this.lover,this.ladybro,this.buddy)
-          }else {
-
           }
-
         })
       },
       tabClick(index) {
