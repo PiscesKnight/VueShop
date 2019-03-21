@@ -1,7 +1,12 @@
 <template>
   <div>
-    <div>
-      <img src="../../static/images/index/carousel2.jpg" width="100%">
+    <div style="height:280px">
+
+    <mt-swipe  :auto="4000" :show-indicators="false">
+      <mt-swipe-item ref="swipeImg" ><img  src="../../static/images/index/slides1.jpg" width="100%"/></mt-swipe-item>
+      <mt-swipe-item><img src="../../static/images/index/slides2.jpg" width="100%"/></mt-swipe-item>
+      <mt-swipe-item><img  src="../../static/images/index/slides3.jpg" width="100%"/></mt-swipe-item>
+    </mt-swipe>
     </div>
     <div style="text-align: center;margin: 20px 0">
       <img src="/static/images/index/index-tj.png" width="70%">
@@ -22,29 +27,44 @@
 </template>
 
 <script>
+  import {Swipe,SwipeItem} from 'mint-ui'
   import axios from 'axios'
   import navFood from '@/views/NavFood'
 
   export default {
     name: 'Index',
     components: {
-      'nav-food': navFood
+      'nav-food': navFood,
+      'mt-swipt':Swipe,
+      'mt-swipt-item':SwipeItem
     },
     data() {
       return {
-        pruductList: []
+        pruductList: [],
+        swipeHeight:0,//轮播图组件高度.
       }
     },
     mounted: function () {
+      this.getSwipeHeight()
       this.getAppData()
     },
+    computed:{
+      // swipeHeight:function(){
+      //   return 286
+      // }
+    },
     methods: {
+      //获取轮播图图片高度
+      getSwipeHeight(){
+        // setTimeout( this.swipeHeight = this.$refs.swipeImg.$el.scrollHeight,100)
+        // setTimeout( console.log(this.$refs.swipeImg),10)
+      },
       getAppData() {
         axios.get("/indexs").then((result) => {
           // var res = result.data.data;
           var res = result.data;
           if (res.status == '0') {
-            this.pruductList = res.result.list;
+            this.pruductList = res.result[0].list;
           }
           else {
             this.pruductList = [];
@@ -59,6 +79,6 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss">
 
 </style>

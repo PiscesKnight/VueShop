@@ -10,7 +10,7 @@
       </div>
       <div class="oder-productinfo">
         <p>{{orderList.productName}}</p>
-        <div style="display: flex;">
+        <div style="display: flex;" v-if="params">
           <p style="flex: 1">颜色：{{params[1]}}</p>
           <p>x{{params[0]}}</p>
         </div>
@@ -64,6 +64,11 @@
 <script>
     export default {
         name: "OrderItem",
+        data(){
+          return{
+
+          }
+        },
         props:[
           'orderList',
           'priceSum',

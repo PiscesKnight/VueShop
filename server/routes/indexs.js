@@ -33,10 +33,9 @@ router.get('/',(req,res,next)=>{
       res.json({
         status:'0',
         msg:'',
-        result:{
-          count:doc.length,
-          list:doc
-        }
+        result:doc
+
+
       })
     }
   })

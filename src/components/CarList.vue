@@ -151,13 +151,18 @@
            }
            axios.post('/users/carEditAll',{checked:this.$refs.checkboxall.checked}).then((response)=>{
              let res = response.data;
+             if(res.status ==0){
+               console.log(res.result)
+             }
            })
          }else {
            for(let i =0;i<this.$refs.checkbox.length;i++){
              this.$refs.checkbox[i].checked =  false
            }
+           this.sum =0
            axios.post('/users/carEditAll',{checked:this.$refs.checkboxall.checked}).then((response)=>{
              let res = response.data;
+
            })
          }
         },

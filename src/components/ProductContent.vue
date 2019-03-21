@@ -1,5 +1,6 @@
 <template>
   <div>
+    <back-btn></back-btn>
     <img :src="'/static/images/'+product.productCover" width="100%"/>
     <div class="one">
       <p class="name">{{product.productName}}</p>
@@ -68,10 +69,11 @@
   import axios from 'axios'
   import store from '@/store/store'
   import CarSheet from '../views/CarSheet'
+  import BackBtn from "../views/backBtn";
 
   export default {
     name: "productContent",
-    components: {CarSheet},
+    components: {BackBtn, CarSheet},
     store,
     data() {
       return {

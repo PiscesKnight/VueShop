@@ -16,7 +16,7 @@
       <mt-tab-container-item id="all">
         <!--订单信息-->
         <div v-for="order in orderList">
-        <order-item :orderList="order.productlist"  :priceTotals="order.orderTotal">
+        <order-item :orderList="order.productlist" :isBuy="false"  :priceTotals="order.orderTotal">
         </order-item>
         </div>
         <!--订单信息end-->
