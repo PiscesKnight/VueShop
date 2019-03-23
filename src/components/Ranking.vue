@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--顶部导航-->
-    <div class="container top-nav" style=" ">
+    <div class="container top-nav">
       <div class="row" style="text-align: center;color: white">
         <div v-for="(items,index) in tabs" @click="tabClick(index)" :class="{active:index==num}" class="col-xs-3">
           <p :class="{'font-yellow':index==num}">{{items}}</p>
@@ -12,24 +12,14 @@
     </div>
     <!--顶部导航end-->
 
-    <!--
-      那烂陀传统
-
-      藏传佛教：印度教+苯教+汉传佛教，隶属大乘佛教
-      藏文：印度梵文演变
-      灌顶：15级，初级为浇水灌顶，男女和合之定为最高级灌顶，无上瑜伽密
-      修行方法：密宗
-      先修显宗，才能修密宗
-    -->
     <div>
       <img src="images/zhitu-des/ranking-item.png" width="100%">
     </div>
-
+    <div v-infinite-scroll="loadMore"
+         infinite-scroll-disabled="loading"
+         infinite-scroll-distance="5">
       <div v-for="(items,index) in tabsContent" v-show="index==num" class="container">
         <div class="row" style="margin-top: 25px">
-          <div v-infinite-scroll="loadMore(items)"
-               infinite-scroll-disabled="loading"
-               infinite-scroll-distance="60">
           <div v-for="item in items" class="col-xs-6" style="min-height: 261px" @click="clickProduct(item)">
             <div class="item-jum">
               <img v-lazy="'/static/images/'+item.productCover" width="100%">
@@ -37,13 +27,12 @@
               <p class="item-price">￥{{item.productPrice}}</p>
             </div>
           </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div style="text-align: center"  v-if="isLoading">
-      <mt-spinner style="display:inline-block;
-                    vertical-align: middle; margin-right:.2rem
-" type="snake" class="loading-more"></mt-spinner>
+    <div style="text-align: center;margin-bottom: 20px"  v-if="mtSpinner">
+      <mt-spinner color="rgb(0,0,0)"  type="snake" class="loading-more"></mt-spinner>
+      加载中。。。
     </div>
 
     <div class="no-more" v-if="noMore">没有更多了~</div>
@@ -69,50 +58,136 @@
         isActive: false,
         tabs: ["送父母", "送恋人", "送闺蜜", "送基友"],
         tabsContent: [],//tab的切面数据数组，用push的方式把各个json数据加进去
-        num: '',
-        loading:false,
-        pageSize:0,//分页
-        isLoading:false,
+        rankingList:[],
+        parents:[],
+        parents2:[],
+        lover:[],
+        ladybro:[],
+        buddy:[],
+        num: 0,
+        loading:true,
+        mtSpinner:false,
+        page:1,//当前页
+        pageSize:6,//每页数量
         noMore:false
       }
     },
     mounted: function () {
-      this.getProductList()
+      this.initProductList()
     },
     methods: {
-      getProductList() {
-        axios.get("/indexs/rankings").then((result) => {
+      //初始化数据
+      initProductList(){
+        let param = {
+          page:this.page,
+          pageSize:this.pageSize
+        }
+        axios.post("/indexs/rankings",{params:param}).then((result) => {
           if (result.data.status == '0') {
-            var res = result.data.result.doc[0];
-            this.parents = res.parents;
-            this.lover = res.lover;
-            this.ladybro = res.ladybro;
-            this.buddy = res.buddy;
+            var res = result.data.result;
+            this.rankingList = res
 
-            this.pageSize=this.buddy.length/6
-            this.tabsContent.push(this.parents, this.lover, this.ladybro, this.buddy)
+            //循环将Tab标签分出了，放进各自的数组
+            for(var i=0;i<this.rankingList.length;i++){
+              if(this.rankingList[i].productTab=='parents'){
+                this.parents.push(this.rankingList[i])
+              }else if(this.rankingList[i].productTab=='lover'){
+                this.lover.push(this.rankingList[i])
+              }else if(this.rankingList[i].productTab=='ladybro'){
+                this.ladybro.push(this.rankingList[i])
+              }else if(this.rankingList[i].productTab=='buddy'){
+                this.buddy.push(this.rankingList[i])
+              }
+            }
+            this.loading = false
+          }
+          this.tabsContent.push(this.parents, this.lover, this.ladybro, this.buddy)
+
+        })
+      },
+      //下拉加载数据
+      loadProductList(index) {
+        let param = {
+          page:this.page,
+          pageSize:this.pageSize
+        }
+        axios.post("/indexs/rankings",{params:param}).then((result) => {
+          if (result.data.status == '0') {
+            var res = result.data.result;
+
+            //多次加载数据
+            // console.log('res:' + res.length)
+            if (res.length == 0) {//判断数据是否为0,为0则关闭加载
+              this.loading = true
+              this.noMore = true
+            } else {
+              //根据this.num保存的Tab指标，来选择性加载数据
+              if (index== 0) {
+               this.addLoadList(res,'parents')
+              } else if (index== 1) {
+                this.addLoadList(res,'lover')
+              }else if(index==2){
+                this.addLoadList(res,'ladybro')
+              }else if(index ==3){
+                this.addLoadList(res,'buddy')
+              }
+
+              let skip = this.rankingList.length - ((this.page - 1) * this.pageSize) //需要跳过的条数
+              let loadSkip = (this.page - 1) * this.pageSize  //需要加载的条数下标
+
+              // console.log(this.rankingList)
+              // console.log('loadSkip:' + loadSkip)
+              // console.log('skip:' + skip)
+              for (var i = 0; i < loadSkip; i++) {
+                // console.log(this.rankingList[i + skip].productTab)
+                if (this.rankingList[i + skip].productTab == 'parents') {
+                  this.parents.push(this.rankingList[i + skip])
+                }
+                else if (this.rankingList[i + skip].productTab == 'lover') {
+                  this.lover.push(this.rankingList[i + skip])
+                } else if (this.rankingList[i + skip].productTab == 'ladybro') {
+                  this.ladybro.push(this.rankingList[i + skip])
+                } else if (this.rankingList[i + skip].productTab == 'buddy') {
+                  this.buddy.push(this.rankingList[i + skip])
+                }
+                this.loading = false
+              }
+            }
           }
         })
       },
+      //封装加载数据代码
+      addLoadList(res,str){
+        let loadList = []
+        for (let a = 0; a < res.length; a++) {
+          if (res[a].productTab == str) {
+            loadList.push(res[a])
+          }
+        }
+        this.rankingList = this.rankingList.concat(loadList)
+      },
       tabClick(index) {
         this.num = index;
+        this.loading =false //点击切换Tab时启动无限加载
+        this.noMore = false //隐藏
+        this.page = 1;//复原页码
       },
+      //跳转商品详情页，使用Vuex保存product数据
       clickProduct(product) {
         this.$router.push({name: 'productContent'})
         sessionStorage.removeItem('product');
         this.$store.commit('getProductList', product)
       },
-      loadMore(items){
-        this.isLoading = true
-        // setTimeout(() => {
-        //   let last = items[items.length - 1];
-        //   for (let i = 1; i <= 6; i++) {
-        //     items.push(last + i);
-        //   }
-        //   this.loading = false;
-        // }, 2500);
+      loadMore(){
+        this.loading  = true
+        this.mtSpinner = true
+      //  多次加载
+        setTimeout(() => {
+          this.page ++;
+          this.loadProductList(this.num);
+          this.mtSpinner = false
+        }, 800);
       }
-
     }
   }
 </script>
@@ -158,5 +233,13 @@
 
   .font-yellow {
     color: yellow;
+  }
+
+  .loading-more{
+    display:inline-block;vertical-align: middle; margin-right:.2rem
+  }
+  .no-more{
+    text-align: center;
+    margin-bottom: 20px;
   }
 </style>

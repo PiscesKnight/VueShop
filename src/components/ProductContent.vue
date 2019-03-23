@@ -1,7 +1,10 @@
 <template>
   <div>
     <back-btn></back-btn>
-    <img :src="'/static/images/'+product.productCover" width="100%"/>
+    <img   :src="'/static/images/'+product.productCover" width="100%"/>
+    <!--<mt-swipe  v-if="product.productImg" :style="{height:mtSwipeHeight+'px'}"  :auto="4000" :show-indicators="false">-->
+      <!--<mt-swipe-item v-for="item in product.productImg" ><img  :src="'/static/images/'+item" width="100%"/></mt-swipe-item>-->
+    <!--</mt-swipe>-->
     <div class="one">
       <p class="name">{{product.productName}}</p>
       <p class="price">{{product.productPrice}}元</p>
@@ -77,15 +80,33 @@
     store,
     data() {
       return {
-        product: this.$store.state.product,
+        product: [],
         count: 1,
         styleChoose:'',//用于判断点击标签更换点击样式
         styleValue:this.$store.state.product.productStyle[0].value[0],//保存选择类型的值
         isAddCart:false,//加入购物车按钮
-        isBuy:false//立即购买按钮
+        isBuy:false,//立即购买按钮,
+        mtSwipeHeight:0
       }
     },
+    mounted:function(){
+      this.getProduct()
+    },
     methods: {
+      getProduct(){
+        if(this.$route.query.productId){
+          axios.post('/indexs/getProduct',{productId:this.$route.query.productId}).then((response)=>{
+            let res = response.data
+            if(res.status == '0'){
+              this.product = res.result
+            }
+          })
+        }else {
+          this.product = this.$store.state.product
+        }
+
+        this.mtSwipeHeight = document.body.clientWidth
+      },
       showDefault(str) {
         if(str=='加入购物车'){
           this.isAddCart = true;

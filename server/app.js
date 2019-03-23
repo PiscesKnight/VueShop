@@ -27,8 +27,7 @@ app.use(function (req,res,next) {
   if(req.cookies.userid){
     next()
   }else {
-   if(req.originalUrl == '/users/login' || req.originalUrl == '/users/loginOut' || req.originalUrl == '/indexs/rankings'
-   || req.originalUrl == '/indexs') {
+   if(req.originalUrl == '/users/login' || req.originalUrl == '/users/loginOut' || req.originalUrl.indexOf('/indexs')>-1 ) {
      next()
    }else {
      res.json({

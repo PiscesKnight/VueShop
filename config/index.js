@@ -15,6 +15,9 @@ module.exports = {
         '/indexs':{
           target:'http://localhost:3000/'
         },
+      '/indexs/**':{
+        target:'http://localhost:3000/'
+      },
       '/users':{
         target:'http://localhost:3000'
       },

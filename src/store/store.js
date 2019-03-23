@@ -6,12 +6,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    product: []
+    product: [],
+    indexProduct:[]
   },
     plugins: [createPersistedState()],
   mutations: {
     getProductList(state, list) {
       state.product = list;
+    },
+    getIndexProduct(state,list){
+      state.indexProduct = list
     }
   },
   getters: {}

@@ -1,5 +1,6 @@
 <template>
     <div>
+      <back-btn></back-btn>
       <img :src="'/static/images/'+productList.productImgs" width="100%"/>
       <div class="padding-lr">
       <h3>{{productList.productTitle}}</h3>
@@ -18,19 +19,34 @@
 </template>
 
 <script>
+    import BackBtn from "../views/backBtn";
     export default {
         name: "IndexContent",
+      components: {BackBtn},
       created:function () {
 
       },
         data(){
           return{
-            productList:this.$route.query.product
+            productList:[]
           }
         },
+      mounted:function(){
+          this.saveStoreData()
+      },
       methods:{
+          saveStoreData(){
+            if(this.$route.query.product.productId){
+              this.$store.commit('getIndexProduct',this.$route.query.product)
+              this.productList = this.$store.state.indexProduct
+            }else {
+              this.productList = this.$store.state.indexProduct
+            }
+
+
+          },
         clickContent(){
-          this.$router.push({name:'productContent',params:{item:this.productList}})
+          this.$router.push({name:'productContent',query:{productId:this.productList.productId}})
         }
       }
     }

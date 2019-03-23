@@ -42,8 +42,29 @@ router.get('/',(req,res,next)=>{
 })
 
 
-router.get('/rankings',(req,res,next)=>{
-  Ranking.find({}, (err, doc) =>{
+router.post('/rankings',(req,res,next)=>{
+var param = req.body.params
+ Ranking.find({'page':param.page}).exec((err, doc) =>{
+   if(err){
+     res.json({
+       status:'1',
+       msg:err.message
+     })
+   }else {
+     res.json({
+       status:'0',
+       msg:'',
+       result: doc
+     })
+   }
+ })
+})
+
+//根据productId显示产品
+router.post('/getProduct',(req,res,next)=>{
+  var productId = req.body.productId
+
+  Ranking.findOne({productId:productId},(err,doc)=>{
     if(err){
       res.json({
         status:'1',
@@ -53,15 +74,12 @@ router.get('/rankings',(req,res,next)=>{
       res.json({
         status:'0',
         msg:'',
-        result:{
-          count:doc.length,
-          doc
-        }
+        result:doc
       })
     }
   })
-})
 
+})
 
 
 module.exports = router
