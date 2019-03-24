@@ -28,10 +28,8 @@
 </template>
 
 <script>
-  import store from '@/store/tabStore'
    export default {
         name: "NavFood",
-     store,
      data(){
        return{
          isIndex:0,
@@ -39,7 +37,22 @@
             '/static/images/navfood/index2.png',
             '/static/images/navfood/ranking.png',
             '/static/images/navfood/me.png'
-          ]//初始化底部标签突破
+          ],
+          indexTabImg:[
+            '/static/images/navfood/index2.png',
+            '/static/images/navfood/ranking.png',
+            '/static/images/navfood/me.png'
+          ],
+          rankingTabImg:[
+            '/static/images/navfood/index.png',
+            '/static/images/navfood/ranking2.png',
+            '/static/images/navfood/me.png'
+          ],
+          meTabImg:[
+            '/static/images/navfood/index.png',
+            '/static/images/navfood/ranking.png',
+            '/static/images/navfood/me2.png'
+          ]
        }
      },
      mounted:function () {
@@ -47,29 +60,30 @@
      },
       methods:{
           initTab(){
-            //当链接不是首页时，拿到store存储的数据填充
-            if(this.$store.state.navTab.length!=0){
-              this.navTab = this.$store.state.navTab
-              this.isIndex = this.$store.state.tabIndex
+            switch (this.$route.name){
+              case 'index':
+                  this.navTab= this.indexTabImg
+                this.isIndex = 0
+                break;
+              case 'ranking':
+                this.navTab= this.rankingTabImg
+                this.isIndex = 1
+                break
+              case 'me':
+                this.navTab= this.meTabImg
+                this.isIndex = 2
+                break
             }
           },
           tabClick(index){
             this.isIndex = index
                 if(index==0){
-                    this.navTab[0] =  '/static/images/navfood/index2.png'
-                  this.navTab[1] ='/static/images/navfood/ranking.png',
-                    this.navTab[2]= '/static/images/navfood/me.png'
+                  this.navTab= this.indexTabImg
                  }else if(index == 1){
-                    this.navTab[0] =  '/static/images/navfood/index.png'
-                    this.navTab[1] ='/static/images/navfood/ranking2.png',
-                      this.navTab[2]= '/static/images/navfood/me.png'
+                  this.navTab= this.rankingTabImg
                 }else if(index == 2){
-                  this.navTab[0] =  '/static/images/navfood/index.png'
-                  this.navTab[1] ='/static/images/navfood/ranking.png',
-                    this.navTab[2]= '/static/images/navfood/me2.png'
+                  this.navTab= this.meTabImg
                 }
-            this.$store.commit('getTab',this.navTab)
-            this.$store.commit('getTabIndex',index)
           }
       }
     }
