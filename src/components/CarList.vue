@@ -11,10 +11,10 @@
     <!--列表-->
     <div class="list container">
       <div class="row" v-for="(item,index) in carList">
-        <div class="col-xs-1" style="line-height: 123px">
+        <div class="col-xs-1" style="line-height: 123px;border-radius: 50%">
           <button v-show="delBtnShow" @click="delProduct(index)" class="btn-danger btn">-</button>
-          <div v-show="!delBtnShow" @change="clickCheck(item)">
-            <label><input type="checkbox" ref="checkbox" :checked="item.checked" ></label>
+          <div v-show="!delBtnShow" @change="clickCheck(item)" >
+            <label style="border-radius: 50%"><input type="checkbox" ref="checkbox" :checked="item.checked" style="border-radius: 50%" ></label>
           </div>
         </div>
         <div class="col-xs-4" style="line-height: 133px">
@@ -43,7 +43,7 @@
     <!--底部-->
     <div class="carlist-fooder ">
       <div class="row">
-        <div class="checkbox col-xs-3" @click="clickCheckAll">
+        <div class="checkbox col-xs-3" @change="clickCheckAll">
           <label><input type="checkbox" ref="checkboxall" :checked="checkboxAllStatus">全选</label>
         </div>
         <div class="col-xs-6">
@@ -68,7 +68,11 @@
           return{
             carList:[],
             sum:0,
-            delBtnShow:false
+            delBtnShow:false,
+            demo:0,
+            options:[
+
+            ]
           }
       },
       mounted () {
@@ -145,24 +149,28 @@
         },
       //  全选按钮
         clickCheckAll(){
+          // console.log(this.$refs.checkboxall.checked)
          if(this.$refs.checkboxall.checked){
-           for(let i =0;i<this.$refs.checkbox.length;i++){
-             this.$refs.checkbox[i].checked =  true
-           }
            axios.post('/users/carEditAll',{checked:this.$refs.checkboxall.checked}).then((response)=>{
              let res = response.data;
              if(res.status ==0){
-               console.log(res.result)
+                res.result.forEach( (item)=> {
+                  this.sum+=item.productPrice*item.count
+                })
+               for(let i =0;i<this.$refs.checkbox.length;i++){
+                 this.$refs.checkbox[i].checked =  true
+               }
              }
            })
          }else {
-           for(let i =0;i<this.$refs.checkbox.length;i++){
-             this.$refs.checkbox[i].checked =  false
-           }
            this.sum =0
            axios.post('/users/carEditAll',{checked:this.$refs.checkboxall.checked}).then((response)=>{
              let res = response.data;
-
+             if(res.status ==0){
+               for(let i =0;i<this.$refs.checkbox.length;i++){
+                 this.$refs.checkbox[i].checked =  false
+               }
+             }
            })
          }
         },

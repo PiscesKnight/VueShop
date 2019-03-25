@@ -1,10 +1,10 @@
 <template>
   <div>
     <back-btn></back-btn>
-    <img   :src="'/static/images/'+product.productCover" width="100%"/>
-    <!--<mt-swipe  v-if="product.productImg" :style="{height:mtSwipeHeight+'px'}"  :auto="4000" :show-indicators="false">-->
-      <!--<mt-swipe-item v-for="item in product.productImg" ><img  :src="'/static/images/'+item" width="100%"/></mt-swipe-item>-->
-    <!--</mt-swipe>-->
+    <!--<img   :src="'/static/images/'+product.productCover" width="100%"/>-->
+    <mt-swipe  v-if="product.productImg" :style="{height:mtSwipeHeight+'px'}"  :auto="4000" :show-indicators="false">
+      <mt-swipe-item v-for="item in product.productImg" ><img  :src="'/static/images/'+item" width="100%"/></mt-swipe-item>
+    </mt-swipe>
     <div class="one">
       <p class="name">{{product.productName}}</p>
       <p class="price">{{product.productPrice}}元</p>
@@ -13,6 +13,7 @@
     <!--详情-->
     <div>
       <h4 style="text-align: center;padding:10px;border-bottom: 1px solid silver">商品详情</h4>
+      <img :src="'/static/images/'+product.productContent" width="100%"/>
     </div>
     <!--详情end-->
 
@@ -48,7 +49,7 @@
         </div>
           <!--数量选择end-->
 
-        <div style="padding-top: 15px;margin-top:10px;border-top: 1px solid gainsboro;text-align: center">
+        <div style="padding-top: 15px;margin-top:10px;border-top: 1px solid gainsboro;text-align: center;">
         <button v-show="isAddCart" class="btn" style="width: 50%;background-color: black;color: white;margin-bottom: 15px" @click="addCar">加入购物车</button>
         <button v-show="isBuy" class="btn" style="width: 50%;background-color: red;color: white;margin-bottom: 15px" @click="toOder">立即购买</button>
         </div>
@@ -56,6 +57,7 @@
     </car-sheet>
     <!--弹出层end-->
 
+    <div style="height: 60px;width: 100%"></div>
     <!--底部-->
     <div class="cart-food">
       <router-link to="carList"><img style="flex-grow: 1;width: 45px;padding: 5px 0" src="../assets/shopcart.svg" ></router-link>
@@ -144,7 +146,7 @@
                     this.$toast('添加成功')
                   }else if(res2.status=='10001'){
                     this.$toast('请登录后再添加商品')
-                    this.$router.push({path:'/me',query:{productId:this.product.productId}})
+                    this.$router.push({name:'me',params:{productId:this.product.productId}})
                   }else {
                     this.$toast('添加失败')
                   }
@@ -201,6 +203,8 @@
     text-align: center;
     display: flex;
     height: 60px;
+    background-color: white;
+    border-top: 1px solid gainsboro;
     img {
       margin-left: 15px;
     }

@@ -1,14 +1,15 @@
 <template>
     <div>
       <back-btn></back-btn>
-      <img :src="'/static/images/'+productList.productImgs" width="100%"/>
-      <div class="padding-lr">
-      <h3>{{productList.productTitle}}</h3>
-      <p>{{productList.productIntro}}</p>
-      </div>
+      <!--<img :src="'/static/images/'+productList.productImgs" width="100%"/>-->
+      <!--<div class="padding-lr">-->
+      <!--<h3>{{productList.productTitle}}</h3>-->
+        <img :src="'/static/images/'+productList.productIntroImg" width="100%"/>
+      <!--<p>{{productList.productIntro}}</p>-->
+      <!--</div>-->
       <!--商品链接-->
       <div>
-        <img :src="'/static/images/'+productList.productCover" width="100%"/>
+        <!--<img :src="'/static/images/'+productList.productCover" width="100%"/>-->
         <div style="padding: 15px">
         <span class="price">￥{{productList.productPrice}}</span>
         <button class="click-btn" @click="clickContent">查看详情</button>

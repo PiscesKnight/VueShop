@@ -106,7 +106,7 @@
         popupVisible:false,
         infoVisible:false,
         loginErr:false,//登录失败显示
-        loginNull:false
+        loginNull:false,
       }
     },
     components:{
@@ -151,6 +151,10 @@
               this.loginErr=false
               this.userInfo = res.result
               this.$toast('登录成功')
+
+              if(this.$route.params.productId){
+                this.$router.push({name:'productContent',query:{productId:this.$route.query.productId}})
+              }
             }else {
               this.loginErr = true
             }

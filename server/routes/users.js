@@ -288,7 +288,6 @@ router.post('/carEditAll',(req,res,next)=>{
       if(doc){
         doc.carlist.forEach(function(item){
           item.checked = checked
-          item.checkedAll = checked
         })
 
         doc.save(function (err1,doc1) {
@@ -301,7 +300,7 @@ router.post('/carEditAll',(req,res,next)=>{
             res.json({
               status:'0',
               msg:'',
-              result:'suc'
+              result:doc1.carlist
             })
           }
         })

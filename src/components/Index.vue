@@ -13,7 +13,7 @@
     </div>
     <div>
       <div v-for="item in pruductList" @click="clickIndexItem(item)">
-        <img :src="'/static/images/'+item.productImgs" width="100%">
+        <img :src="'/static/images/'+item.productCover" width="100%">
         <div style="padding: 0 10px 10px 10px">
           <p style="font-size: 17px;font-weight: bold;padding-top:10px ">{{item.productTitle}}</p>
           <p style="font-size:13px;color: darkgray;letter-spacing:1px">{{item.productIntro}}</p>
