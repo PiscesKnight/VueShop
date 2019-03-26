@@ -58,7 +58,7 @@
     name: "Oder",
     data() {
       return {
-        orderList: [{}],
+        orderList: [],
         priceSum: 0,//商品总金额
         jb: 0,//金币抵扣
         freight: 0,//运费
@@ -85,7 +85,7 @@
         if (this.$route.query.count) {
           this.isBuy = true
           this.orderList = this.$store.state.product
-          console.log(this.orderList)
+          // console.log(this.orderList)
           this.priceSum = this.orderList.productPrice * this.$route.query.count
           this.params.push(this.$route.query.count,this.$route.query.style)
         }
@@ -94,7 +94,7 @@
           axios.get("/users/cartlist").then((result) => {
             var res = result.data;
             if (res.status == '0') {
-              this.orderList = res.result.users.carlist
+              this.orderList = res.result.carlist
               //初始化商品总金额
               for (var i = 0; i < this.orderList.length; i++) {
                 if (this.orderList[i].checked) {
@@ -102,16 +102,13 @@
                 }
               }
             }
-            else {
-              this.orderList = []
-            }
           })
         }
 
       },
       //确定订单
       orderConfirm() {
-        axios.post('/users/createOrder', {orderTotal: this.priceTotals}).then((response) => {
+        axios.post('/users/createOrder', {orderTotal: this.priceTotals,orderStatus:1}).then((response) => {
           let res = response.data
           if (res.status == '0') {
             this.$router.push({path: '/pay', query: {orderTotal: res.result.orderTotal, orderId: res.result.orderId}})

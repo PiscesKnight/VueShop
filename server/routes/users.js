@@ -23,15 +23,7 @@ router.post('/login',(req,res,next)=>{
           path:'/',
           maxAge:1000*60*60  //存一个小时
         })
-        res.cookie('nickname',doc.nickname,{
-          path:'/',
-          maxAge:1000*60*60  //存一个小时
-        })
         res.cookie('userjb',doc.userjb,{
-          path:'/',
-          maxAge:1000*60*60  //存一个小时
-        })
-        res.cookie('usercover',doc.usercover,{
           path:'/',
           maxAge:1000*60*60  //存一个小时
         })
@@ -62,14 +54,6 @@ router.post('/loginOut',(req,res,next)=>{
     path:'/',
     maxAge:0  //删除cookie存的值
   }),
-    res.cookie('nickname','',{
-      path:'/',
-      maxAge:0  //删除cookie存的值
-    })
-  res.cookie('usercover','',{
-    path:'/',
-    maxAge:0  //删除cookie存的值
-  })
   res.cookie('userjb','',{
     path:'/',
     maxAge:0  //删除cookie存的值
@@ -88,8 +72,6 @@ router.get('/checkLogin',function (req,res,next) {
       status:'0',
       msg:'',
       result:{
-        'nickname':req.cookies.nickname,
-        'usercover':req.cookies.usercover,
         'userjb':req.cookies.userjb
     }
     })
@@ -111,7 +93,8 @@ router.get('/cartlist',(req,res,next)=>{
           msg:'',
           result:{
             count:doc.length,
-            users:doc
+            carlist:doc.carlist,
+            orderlist:doc.orderlist
           }
       })
     }
@@ -336,6 +319,7 @@ router.post('/carDel',(req,res,next)=>{
 //生成订单
 router.post('/createOrder',(req,res,next)=>{
   var orderTotal = req.body.orderTotal
+  var orderStatus = req.body.orderStatus
   var userid = req.cookies.userid
   User.findOne({userid:userid},(err,doc)=>{
       if(err){
@@ -359,8 +343,8 @@ router.post('/createOrder',(req,res,next)=>{
           orderId:orderId,
           orderTotal:orderTotal,
           productlist:productlist,
-          orderStatus:'1',
-          createDate:createDate
+          orderStatus:orderStatus,
+          createDate:createDate,
         }
 
         doc.orderlist.push(order)
@@ -404,7 +388,7 @@ router.post('/payOrder',(req,res,next)=>{
   var userjb = req.body.userjd
   var userPwd = req.body.userPwd
   var orderId = req.body.orderId
-  User.updateOne({userid:userid,userpwd:userPwd,'orderlist.orderId':orderId},{userjb:userjb,'orderlist.$.orderStatus':'2'},(err,doc)=>{
+  User.updateOne({userid:userid,userpwd:userPwd,'orderlist.orderId':orderId},{userjb:userjb,'orderlist.$.orderStatus':2},(err,doc)=>{
     if(err){
       res.json({
         status:'1',

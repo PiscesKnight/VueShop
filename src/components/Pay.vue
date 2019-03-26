@@ -30,13 +30,14 @@
 
 <script>
     import HeaderTop from "../views/HeaderTop";
+    import {setCookie,getCookie} from "../utils/CookieUtil";
     import axios from 'axios'
 
     export default {
         name: "Pay",
       data(){
           return{
-            jb:9999,
+            jb:getCookie('userjb'),
             orderTotal:this.$route.query.orderTotal,
             orderId:this.$route.query.orderId
           }
@@ -53,9 +54,6 @@
           }
       },
       methods:{
-          init(){
-
-          },
         pay(){
             this.$messagebox.confirm('',{
               message:'请输入密码',
@@ -77,14 +75,23 @@
                   let res = response.data
                   if(res.status=='0') {
                     if (res.result.n==1 && res.result.nModified==1 && res.result.ok==1) {
-                      this.$toast('支付成功')
+
+                      setCookie('userjb',this.priceTotal)
+                      this.$indicator.open({
+                        text: '支付成功，等待跳转',
+                        spinnerType: 'fading-circle'
+                      });
+                      setTimeout(()=>{
+                        this.$router.push('/orderlist')
+                        this.$indicator.close()
+                      },1500)
+
                     } else {
                       this.$toast('密码错误，请重新输入')
                     }
                   }
                 })
               }else {
-                console.log(this.$messagebox.confirm)
                 this.$toast('金币不足')
               }
             }).catch(err=>{

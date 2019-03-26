@@ -12,7 +12,9 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 
-Vue.use(Vuelazyload)
+Vue.use(Vuelazyload,{
+  loading:'./static/loading.gif'
+})
 Vue.use(MintUI)
 
 new Vue({

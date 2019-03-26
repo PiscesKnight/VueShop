@@ -12,7 +12,7 @@
 
     <!--详情-->
     <div>
-      <h4 style="text-align: center;padding:10px;border-bottom: 1px solid silver">商品详情</h4>
+      <h4 style="text-align: center;padding:10px;margin:10px;border-bottom: 1px solid silver">商品详情</h4>
       <img :src="'/static/images/'+product.productContent" width="100%"/>
     </div>
     <!--详情end-->
@@ -60,7 +60,7 @@
     <div style="height: 60px;width: 100%"></div>
     <!--底部-->
     <div class="cart-food">
-      <router-link to="carList"><img style="flex-grow: 1;width: 45px;padding: 5px 0" src="../assets/shopcart.svg" ></router-link>
+      <img style="flex-grow: 1;width: 45px;padding: 5px 0" src="../assets/shopcart.svg" @click="toCarlist">
       <div style="flex-grow: 1"></div>
       <button class="add-btn" @click="showDefault('加入购物车')">加入购物车</button>
       <button class="buy-btn" @click='showDefault("立即购买")'>立即购买</button>
@@ -96,6 +96,10 @@
     },
     methods: {
       getProduct(){
+        this.$indicator.open({
+          text: '加载中...',
+          spinnerType: 'fading-circle'
+        });
         if(this.$route.query.productId){
           axios.post('/indexs/getProduct',{productId:this.$route.query.productId}).then((response)=>{
             let res = response.data
@@ -108,6 +112,10 @@
         }
 
         this.mtSwipeHeight = document.body.clientWidth
+
+        setTimeout(()=>{
+          this.$indicator.close()
+        },1000)
       },
       showDefault(str) {
         if(str=='加入购物车'){
@@ -134,6 +142,17 @@
           this.count -= 1
         }
       },
+      toCarlist(){
+        axios.get('/users/checkLogin').then((response)=>{
+          let res = response.data;
+          if(res.status=='0'){
+            this.$router.push('/carlist')
+          }else if(res.status=='10001'){
+            this.$toast('请登录后再查询购物车')
+            this.$router.push({name:'me',params:{productId:this.product.productId}})
+          }
+        })
+      },
       addCar(){
         this.$refs.sheet.$data.showSheet = false,
           axios.post('/users/cartlistFind',{productId:this.product.productId}).then((response)=>{
@@ -151,7 +170,6 @@
                     this.$toast('添加失败')
                   }
                 })
-
             }else {
               this.$refs.sheet.$data.showSheet = false,
               axios.post('/users/cartlistAdd',{product:this.product,count:this.count,styleValue:this.styleValue,docLength:res.result}).then((response)=>{
@@ -160,6 +178,7 @@
                   this.$toast('添加成功')
                 }else if(res2.status=='10001'){
                   this.$toast('请登录后再添加商品')
+                  this.$router.push({name:'me',params:{productId:this.product.productId}})
                 }else {
                   this.$toast('添加失败')
                 }
@@ -169,7 +188,15 @@
       },
       //立即购买
       toOder(){
-          this.$router.push({name:'orders',query:{count:this.count,style:this.styleValue}})
+        axios.get('/users/checkLogin').then((response)=>{
+          let res = response.data;
+          if(res.status=='0'){
+            this.$router.push({name:'orders',query:{count:this.count,style:this.styleValue}})
+          }else if(res.status=='10001'){
+            this.$toast('请登录后再购买商品')
+            this.$router.push({name:'me',params:{productId:this.product.productId}})
+          }
+        })
       }
     },
 

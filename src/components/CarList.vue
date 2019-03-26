@@ -4,10 +4,17 @@
     <!--头部-->
     <header-top>
       <p slot="top-title">我的购物车</p>
-      <p slot="top-right" @click="carDel">编辑</p>
+      <p slot="top-right" v-if="!isListNull" @click="carDel">编辑</p>
     </header-top>
     <!--头部end-->
-
+    <!--当购物车没有商品-->
+  <div v-if="isListNull" style="width: 100%;text-align: center;position: absolute;left: 0;top: 0;z-index: 99;height: 100%">
+    <div style="position: relative;top: 45%;">
+    <p style="font-size: 18px;font-weight: bold">暂无商品</p>
+    <p>快去采购吧</p>
+    </div>
+  </div>
+    <!--当购物车没有商品end-->
     <!--列表-->
     <div class="list container">
       <div class="row" v-for="(item,index) in carList">
@@ -49,7 +56,7 @@
         <div class="col-xs-6">
           <p style="text-align: right">总计：￥{{this.sum}}.00</p>
         </div>
-        <div class="col-xs-3"><router-link to="orders"><button class="btn btn-danger">去结算</button></router-link></div>
+        <div class="col-xs-3"><button class="btn btn-danger" @click="toOrder">去结算</button></div>
       </div>
     </div>
     <!--底部end-->
@@ -71,8 +78,8 @@
             delBtnShow:false,
             demo:0,
             options:[
-
-            ]
+            ],
+            isListNull:false
           }
       },
       mounted () {
@@ -80,7 +87,12 @@
       },
       computed:{
           checkboxAllStatus:function(){//判断是否勾选数量与购物车数量一致，一致为全选
-            return this.checkCount == this.carList.length
+            if(this.carList.length==0){
+              return false
+            }else {
+              return this.checkCount == this.carList.length
+            }
+
           },
         checkCount:function () {
           var i =0;
@@ -96,17 +108,24 @@
             axios.get("/users/cartlist").then((result)=>{
               var res = result.data;
               if(res.status == '0'){
-                this.carList = res.result.users.carlist
-                //初始化新加入购物车的数据
-                this.sum = 0;//初始化
-                for(var i=0;i<this.carList.length;i++){
+                this.carList = res.result.carlist
+                if(this.carList.length==0){
+                 this.isListNull = true
+                  this.sum=0
+                }else {
+                  //初始化新加入购物车的数据
+                  this.sum = 0;//初始化
+                  this.isListNull = false
+                  for(var i=0;i<this.carList.length;i++){
                     if(this.carList[i].checked){
-                    this.sum+= (this.carList[i].productPrice*this.carList[i].count)
+                      this.sum+= (this.carList[i].productPrice*this.carList[i].count)
                     }
                   }
+                }
               }
-              else {
-                this.carList = []
+              else if(res.status == '10001'){
+                  this.$toast('请登录后再查询购物车')
+                  this.$router.push({name:'me',params:{toCarlist:'toCarlist'}})
               }
             })
 
@@ -149,11 +168,12 @@
         },
       //  全选按钮
         clickCheckAll(){
-          // console.log(this.$refs.checkboxall.checked)
+          console.log(this.$refs.checkboxall.checked)
          if(this.$refs.checkboxall.checked){
            axios.post('/users/carEditAll',{checked:this.$refs.checkboxall.checked}).then((response)=>{
              let res = response.data;
              if(res.status ==0){
+               this.carList = res.result  //重新赋值carList，才可以让计算属性的checkCount更新
                 res.result.forEach( (item)=> {
                   this.sum+=item.productPrice*item.count
                 })
@@ -167,6 +187,7 @@
            axios.post('/users/carEditAll',{checked:this.$refs.checkboxall.checked}).then((response)=>{
              let res = response.data;
              if(res.status ==0){
+               this.carList = res.result  //重新赋值carList，才可以让计算属性的checkCount更新
                for(let i =0;i<this.$refs.checkbox.length;i++){
                  this.$refs.checkbox[i].checked =  false
                }
@@ -195,6 +216,14 @@
                 }
             })
           })
+        },
+        //去结算
+        toOrder(){
+          if(this.carList.length==0){
+            this.$toast("请添加商品")
+          }else {
+            this.$router.push('/orders')
+          }
         }
         }
     }

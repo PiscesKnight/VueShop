@@ -44,7 +44,7 @@ var userSchema = new Schema({
                 ]
               }
             ],
-            orderStatus:String,
+            orderStatus:Number,//1:待付款，2：待发货，3：带收货
             createDate:String
 
         }

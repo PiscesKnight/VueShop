@@ -61,9 +61,9 @@
               axios.get('/users/cartlist').then((response)=>{
                 let res = response.data
                 if(res.status == '0'){
-                  this.orderList = res.result.users.orderlist
-                  this.jb = res.result.users.jb
-                  console.log(this.orderList)
+                  this.orderList = res.result.orderlist
+                  // this.jb = res.result.users.jb
+                  // console.log(this.orderList)
                 }
               })
           }

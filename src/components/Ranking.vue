@@ -17,14 +17,14 @@
     </div>
     <div v-infinite-scroll="loadMore"
          infinite-scroll-disabled="loading"
-         infinite-scroll-distance="5">
+         infinite-scroll-distance="50">
       <div v-for="(items,index) in tabsContent" v-show="index==num" class="container">
-        <div class="row" style="margin-top: 25px">
-          <div v-for="item in items" class="col-xs-6" style="min-height: 261px" @click="clickProduct(item)">
-            <div class="item-jum">
-              <img v-lazy="'/static/images/'+item.productCover" width="100%">
-              <p class="item-title">{{item.productName}}</p>
-              <p class="item-price">￥{{item.productPrice}}</p>
+        <div class="row" style="margin-top: 25px;">
+          <div v-for="item in items" class="col-xs-6" style="min-height: 258px;" @click="clickProduct(item)">
+            <div class="item-jum" style="border-radius: 10px">
+              <img v-lazy="'/static/images/'+item.productCover" width="100%" style="border-top-left-radius: 10px;border-top-right-radius: 10px">
+              <p align="center" class="item-title">{{item.productName}}</p>
+              <p align="center" class="item-price">￥{{item.productPrice}}</p>
             </div>
           </div>
           </div>
@@ -217,18 +217,15 @@
     overflow: hidden;
     text-overflow: clip;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
   }
 
   .item-jum .item-price {
     color: red;
     font-size: 16px;
-    margin-bottom: 0;
-    padding-left: 5px;
     margin-top: 8px;
-    margin-bottom: 5px;
-
+    padding-bottom: 5px;
   }
 
   .font-yellow {

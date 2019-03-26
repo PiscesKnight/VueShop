@@ -154,6 +154,8 @@
 
               if(this.$route.params.productId){
                 this.$router.push({name:'productContent',query:{productId:this.$route.query.productId}})
+              }else if(this.$route.params.toCarlist){
+                this.$router.push({path:'/carlist'})
               }
             }else {
               this.loginErr = true

@@ -49,9 +49,7 @@
       this.getAppData()
     },
     computed:{
-      // swipeHeight:function(){
-      //   return 286
-      // }
+
     },
     methods: {
       //获取轮播图图片高度
@@ -60,6 +58,10 @@
         // setTimeout( console.log(this.$refs.swipeImg),10)
       },
       getAppData() {
+        this.$indicator.open({
+          text: '加载中...',
+          spinnerType: 'fading-circle'
+        });
         axios.get("/indexs").then((result) => {
           // var res = result.data.data;
           var res = result.data;
@@ -70,6 +72,11 @@
             this.pruductList = [];
           }
         })
+
+        setTimeout(()=>{
+          this.$indicator.close()
+        },1000)
+
       },
       clickIndexItem(product) {
         this.$router.push({path: '/indexContent?id=' + product.productId, query: {product: product}});

@@ -1,12 +1,8 @@
 <template>
     <div>
       <back-btn></back-btn>
-      <!--<img :src="'/static/images/'+productList.productImgs" width="100%"/>-->
-      <!--<div class="padding-lr">-->
-      <!--<h3>{{productList.productTitle}}</h3>-->
         <img :src="'/static/images/'+productList.productIntroImg" width="100%"/>
-      <!--<p>{{productList.productIntro}}</p>-->
-      <!--</div>-->
+
       <!--商品链接-->
       <div>
         <!--<img :src="'/static/images/'+productList.productCover" width="100%"/>-->
@@ -37,12 +33,21 @@
       },
       methods:{
           saveStoreData(){
+            this.$indicator.open({
+              text: '加载中...',
+              spinnerType: 'fading-circle'
+            });
+
             if(this.$route.query.product.productId){
               this.$store.commit('getIndexProduct',this.$route.query.product)
               this.productList = this.$store.state.indexProduct
             }else {
               this.productList = this.$store.state.indexProduct
             }
+
+            setTimeout(()=>{
+              this.$indicator.close()
+            },2000)
 
 
           },
